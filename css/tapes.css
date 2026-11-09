@@ -1,0 +1,368 @@
+/* --------------------------------------------------------------------------
+   Stage Section: Stack of Tapes directly above the CRT TV
+   -------------------------------------------------------------------------- */
+.stage-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+/* Tapes Stack Container */
+.tapes-stack-wrapper {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+  margin-bottom: -18px;
+}
+
+/* Base Tape Item */
+.tape-item {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border-radius: 3px;
+  margin-top: -6px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.28s ease,
+              border-color 0.28s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.75), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.tape-item:first-child {
+  margin-top: 0;
+}
+
+.tape-item[data-index="0"] { transform: translateX(0px); }
+.tape-item[data-index="1"] { transform: translateX(-10px); }
+.tape-item[data-index="2"] { transform: translateX(6px); }
+.tape-item[data-index="3"] { transform: translateX(-4px); }
+.tape-item[data-index="4"] { transform: translateX(-8px); }
+
+.tape-item:hover,
+.tape-item:focus-visible {
+  transform: translateX(16px) scale(1.012) !important;
+  z-index: 15;
+  box-shadow: -8px 12px 24px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.15);
+}
+
+.tape-item.active-tape {
+  transform: translateX(20px) !important;
+  z-index: 20;
+  box-shadow: -10px 14px 28px rgba(0, 0, 0, 0.95), 0 0 18px rgba(96, 165, 250, 0.35);
+  border-right: 3px solid #60a5fa;
+}
+
+.tape-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+/* Tape 1 */
+.tape-black-marker {
+  background: #141416 linear-gradient(180deg, #222328 0%, #111113 100%);
+  border: 1px solid #2f3036;
+}
+
+.tape-grip-grooves {
+  width: 24px;
+  height: 80%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 2px,
+    #0c0c0e 2px,
+    #0c0c0e 4px
+  );
+  opacity: 0.8;
+  margin: 0 10px;
+}
+
+.tape-label.handwritten-label {
+  flex: 1;
+  background: #f1ede3;
+  color: #17181c;
+  height: 72%;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 12px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.marker-text {
+  font-family: 'Instrument Serif', cursive, Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: #1e3a8a;
+  line-height: 1.1;
+}
+
+.marker-sub {
+  font-family: var(--font-y2k);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.tape-status-tag {
+  font-family: var(--font-y2k);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #8b8e99;
+  padding: 0 10px;
+  letter-spacing: 0.08em;
+}
+
+/* Tape 2 */
+.tape-sleeve-distressed {
+  background: #e9e8e2;
+  color: #121316;
+  border: 1px solid #c7c6be;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.08);
+}
+
+.label-track-num {
+  font-family: var(--font-y2k);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #55575e;
+  margin-left: 16px;
+  margin-right: 6px;
+}
+
+.label-title {
+  font-family: var(--font-y2k);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0b0c0e;
+}
+
+.distressed-graphic-shape {
+  flex: 1;
+  height: 82%;
+  margin: 0 14px;
+  background: #312e81;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  border-radius: 1px;
+  clip-path: polygon(0 20%, 15% 0, 100% 0, 100% 100%, 8% 100%);
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 2px, transparent 2px, transparent 6px);
+}
+
+.distressed-graphic-shape .year-stamp {
+  font-family: var(--font-y2k);
+  font-size: 1.05rem;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.barcode-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 14px;
+  border-left: 1px solid #c0bfb7;
+}
+
+.barcode-lines {
+  font-family: monospace;
+  font-size: 0.72rem;
+  letter-spacing: -0.05em;
+  transform: scaleY(1.4);
+  color: #2b2c31;
+}
+
+.barcode-id {
+  font-family: var(--font-y2k);
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: #636674;
+}
+
+/* Tape 3 */
+.tape-cream-vintage {
+  background: #ded7c1;
+  color: #1a1a1c;
+  border: 1px solid #c2b99c;
+}
+
+.flex-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.emblem-star {
+  font-size: 0.85rem;
+  color: #927836;
+}
+
+.vintage-stripes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0 16px;
+}
+
+.vintage-stripes .stripe {
+  height: 6px;
+  border-radius: 1px;
+}
+
+.vintage-stripes .stripe.blue { background-color: #2563eb; }
+.vintage-stripes .stripe.lightblue { background-color: #93c5fd; }
+
+.side-stamp {
+  padding: 0 14px;
+  border-left: 1px solid #af9d75;
+}
+
+.stamp-box {
+  display: inline-block;
+  padding: 2px 5px;
+  border: 1.5px solid #1f2024;
+  font-family: var(--font-y2k);
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* Tape 4 */
+.tape-black-accent {
+  background: #111215;
+  border: 1px solid #2a2b30;
+}
+
+.tape-label.center-sticker {
+  flex: 1;
+  background: #f4f3ec;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.small-tag {
+  font-family: var(--font-y2k);
+  font-size: 0.52rem;
+  color: #6b7280;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.blue-pen-text {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.live-badge {
+  background: #dc2626;
+  color: #fff !important;
+  font-size: 0.55rem;
+  padding: 2px 5px !important;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+
+/* Tape 5 */
+.tape-colorbars {
+  background: #eae8df;
+  border: 1px solid #cdc9bb;
+  color: #111215;
+}
+
+.side-brand-box {
+  padding: 0 12px;
+  font-family: var(--font-y2k);
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  border: 1px solid #333;
+  margin-left: 12px;
+}
+
+.retro-color-bars {
+  display: flex;
+  height: 100%;
+  width: 90px;
+  margin-left: 10px;
+  margin-right: 12px;
+}
+
+.retro-color-bars .bar {
+  flex: 1;
+  height: 100%;
+}
+
+.bar-purple   { background-color: #4338ca; }
+.bar-darkblue { background-color: #2563eb; }
+.bar-blue     { background-color: #0284c7; }
+.bar-teal     { background-color: #0d9488; }
+.bar-green    { background-color: #16a34a; }
+
+.label-title-bold {
+  font-family: var(--font-y2k);
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #090a0d;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.price-highlight {
+  color: #dc2626;
+  font-weight: 900;
+  background: #fee2e2;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.y2k-accent {
+  font-family: var(--font-y2k);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border: 1px solid #000;
+  padding: 0 4px;
+  font-size: 0.85rem;
+}

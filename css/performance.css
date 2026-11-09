@@ -1,0 +1,299 @@
+/* Keep the desktop theme intact while reducing phone rendering work.
+   Load after responsive.css. No dimensions, visibility, or focus behavior change. */
+@media (max-width: 900px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    /* A tiny static tile avoids a viewport-sized SVG turbulence filter. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath fill='%23fff' d='M3 5h1v1H3zM18 2h1v1h-1zM33 8h1v1h-1zM52 3h1v1h-1zM9 21h1v1H9zM25 17h1v1h-1zM44 23h1v1h-1zM60 16h1v1h-1zM4 39h1v1H4zM21 34h1v1h-1zM38 41h1v1h-1zM55 35h1v1h-1zM12 55h1v1h-1zM29 49h1v1h-1zM47 59h1v1h-1zM61 51h1v1h-1z'/%3E%3C/svg%3E");
+    background-size: 64px 64px;
+  }
+
+  .floating-cd-wrap,
+  .floating-tape-wrap,
+  .retro-cd-disc,
+  .cd-rainbow-iridescent,
+  .cd-specular-beam,
+  .tape-spool-gear::after,
+  .floating-sparkle-accent,
+  .charm-image-frameless,
+  .ticket-foil-sheen,
+  .rec-blinker,
+  .pulse-dot,
+  .payphone-status-dot,
+  .osd-play-status {
+    /* Decorative motion becomes static; state colors and controls still work. */
+    animation: none;
+  }
+
+  .floating-cd-wrap,
+  .floating-tape-wrap,
+  .floating-sparkle-accent {
+    filter: none;
+    perspective: none;
+  }
+
+  .cd-pos-top-right {
+    transform: rotate(10deg) scaleY(0.78);
+  }
+
+  .cd-pos-bottom-left {
+    transform: rotate(-12deg) scaleY(0.83);
+  }
+
+  .tape-pos-mid-left {
+    transform: rotate(-10deg);
+  }
+
+  .tape-pos-bottom-right {
+    transform: rotate(8deg);
+  }
+
+  .retro-cd-disc {
+    transform: none;
+    transform-style: flat;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2), 0 4px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .retro-tape-3d-shell {
+    transform-style: flat;
+    background: rgba(38, 42, 50, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .site-global-navbar,
+  .navbar-nav-group,
+  .auth-modal-backdrop,
+  .payphone-modal-backdrop,
+  .polaroid-lightbox,
+  .payphone-floating-dock,
+  .card-scotch-tape,
+  .retro-tape-3d-shell,
+  .ticket-status-pill,
+  .btn-ticket-info,
+  .viewfinder-hud-bar {
+    /* Avoid re-blurring everything behind fixed and scrolling surfaces. */
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .site-global-navbar {
+    background: linear-gradient(180deg, #fff 0%, #fafcff 60%, #f3f6fa 100%);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .navbar-nav-group {
+    background: #fff;
+  }
+
+  .auth-modal-backdrop,
+  .polaroid-lightbox {
+    background: rgba(8, 9, 12, 0.97);
+  }
+
+  .payphone-modal-backdrop {
+    background: radial-gradient(circle at 50% 40%, #12141c 0%, #0a0b10 65%, #040508 100%);
+  }
+
+  .payphone-floating-dock {
+    background: #10121a;
+  }
+
+  .charm-image-frameless,
+  .official-charm-badge.frameless:hover .charm-image-frameless {
+    filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.8));
+    transition: transform 0.2s ease;
+  }
+
+  .brand-swash-t {
+    filter: none;
+    text-shadow: 0 0 6px rgba(255, 0, 127, 0.65);
+  }
+
+  .title-ten {
+    filter: none;
+  }
+
+  .crt-video {
+    filter: none;
+  }
+
+  .hanger-assembly,
+  .hanger-assembly:hover,
+  .hanger-assembly.selected {
+    filter: none;
+    transition: transform 0.25s ease;
+  }
+
+  .hanger-assembly:hover {
+    animation: none !important;
+  }
+
+  .tshirt-svg {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+  }
+
+  .tshirt-svg [filter="url(#fabricShadow)"] {
+    filter: none;
+  }
+
+  .hanger-assembly.selected .tshirt-svg {
+    filter: drop-shadow(0 0 5px rgba(255, 0, 127, 0.55));
+  }
+
+  .cassette-tape-card.active-front {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
+  }
+
+  .payphone-handset-piece,
+  .payphone-coiled-cord {
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.65));
+  }
+}
+
+/* The runtime also uses the same lighter presentation for Save-Data connections. */
+body.performance-light .grain-overlay {
+  /* A tiny static tile avoids a viewport-sized SVG turbulence filter. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath fill='%23fff' d='M3 5h1v1H3zM18 2h1v1h-1zM33 8h1v1h-1zM52 3h1v1h-1zM9 21h1v1H9zM25 17h1v1h-1zM44 23h1v1h-1zM60 16h1v1h-1zM4 39h1v1H4zM21 34h1v1h-1zM38 41h1v1h-1zM55 35h1v1h-1zM12 55h1v1h-1zM29 49h1v1h-1zM47 59h1v1h-1zM61 51h1v1h-1z'/%3E%3C/svg%3E");
+  background-size: 64px 64px;
+}
+
+body.performance-light .floating-cd-wrap,
+body.performance-light .floating-tape-wrap,
+body.performance-light .retro-cd-disc,
+body.performance-light .cd-rainbow-iridescent,
+body.performance-light .cd-specular-beam,
+body.performance-light .tape-spool-gear::after,
+body.performance-light .floating-sparkle-accent,
+body.performance-light .charm-image-frameless,
+body.performance-light .ticket-foil-sheen,
+body.performance-light .rec-blinker,
+body.performance-light .pulse-dot,
+body.performance-light .payphone-status-dot,
+body.performance-light .osd-play-status {
+  /* Decorative motion becomes static; state colors and controls still work. */
+  animation: none;
+}
+
+body.performance-light .floating-cd-wrap,
+body.performance-light .floating-tape-wrap,
+body.performance-light .floating-sparkle-accent {
+  filter: none;
+  perspective: none;
+}
+
+body.performance-light .cd-pos-top-right {
+  transform: rotate(10deg) scaleY(0.78);
+}
+
+body.performance-light .cd-pos-bottom-left {
+  transform: rotate(-12deg) scaleY(0.83);
+}
+
+body.performance-light .tape-pos-mid-left {
+  transform: rotate(-10deg);
+}
+
+body.performance-light .tape-pos-bottom-right {
+  transform: rotate(8deg);
+}
+
+body.performance-light .retro-cd-disc {
+  transform: none;
+  transform-style: flat;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2), 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+body.performance-light .retro-tape-3d-shell {
+  transform-style: flat;
+  background: rgba(38, 42, 50, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+body.performance-light .site-global-navbar,
+body.performance-light .navbar-nav-group,
+body.performance-light .auth-modal-backdrop,
+body.performance-light .payphone-modal-backdrop,
+body.performance-light .polaroid-lightbox,
+body.performance-light .payphone-floating-dock,
+body.performance-light .card-scotch-tape,
+body.performance-light .retro-tape-3d-shell,
+body.performance-light .ticket-status-pill,
+body.performance-light .btn-ticket-info,
+body.performance-light .viewfinder-hud-bar {
+  /* Avoid re-blurring everything behind fixed and scrolling surfaces. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+body.performance-light .site-global-navbar {
+  background: linear-gradient(180deg, #fff 0%, #fafcff 60%, #f3f6fa 100%);
+  transition: box-shadow 0.2s ease;
+}
+
+body.performance-light .navbar-nav-group {
+  background: #fff;
+}
+
+body.performance-light .auth-modal-backdrop,
+body.performance-light .polaroid-lightbox {
+  background: rgba(8, 9, 12, 0.97);
+}
+
+body.performance-light .payphone-modal-backdrop {
+  background: radial-gradient(circle at 50% 40%, #12141c 0%, #0a0b10 65%, #040508 100%);
+}
+
+body.performance-light .payphone-floating-dock {
+  background: #10121a;
+}
+
+body.performance-light .charm-image-frameless,
+body.performance-light .official-charm-badge.frameless:hover .charm-image-frameless {
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.8));
+  transition: transform 0.2s ease;
+}
+
+body.performance-light .brand-swash-t {
+  filter: none;
+  text-shadow: 0 0 6px rgba(255, 0, 127, 0.65);
+}
+
+body.performance-light .title-ten {
+  filter: none;
+}
+
+body.performance-light .crt-video {
+  filter: none;
+}
+
+body.performance-light .hanger-assembly,
+body.performance-light .hanger-assembly:hover,
+body.performance-light .hanger-assembly.selected {
+  filter: none;
+  transition: transform 0.25s ease;
+}
+
+body.performance-light .hanger-assembly:hover {
+  animation: none !important;
+}
+
+body.performance-light .tshirt-svg {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+}
+
+body.performance-light .tshirt-svg [filter="url(#fabricShadow)"] {
+  filter: none;
+}
+
+body.performance-light .hanger-assembly.selected .tshirt-svg {
+  filter: drop-shadow(0 0 5px rgba(255, 0, 127, 0.55));
+}
+
+body.performance-light .cassette-tape-card.active-front {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
+}
+
+body.performance-light .payphone-handset-piece,
+body.performance-light .payphone-coiled-cord {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.65));
+}
+

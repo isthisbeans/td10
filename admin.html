@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <title>จัดการคำสั่งซื้อ · TRIAMDOD 10</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="js/api.js" defer></script>
+  <script src="js/admin.js" defer></script>
+</head>
+<body class="admin-body">
+  <div class="admin-lock-screen" id="adminLockScreen">
+    <main class="access-card" aria-labelledby="accessHeading">
+      <span class="brand-mark">T10</span>
+      <p class="eyebrow">TRIAMDOD 10 · สภานักเรียน</p>
+      <h1 id="accessHeading">เข้าสู่ระบบผู้ดูแล</h1>
+      <p id="adminAccessStatus" class="access-status" role="status">กำลังตรวจสอบบัญชี Google…</p>
+      <a class="btn btn-primary" href="index.html" target="_blank" rel="noopener">เข้าสู่ระบบด้วย Google</a>
+      <button type="button" class="btn" id="btnAdminLogin">ตรวจสอบสิทธิ์อีกครั้ง</button>
+      <p class="muted">ใช้บัญชีที่ได้รับสิทธิ์ผู้ดูแลจากเจ้าของเว็บไซต์</p>
+    </main>
+  </div>
+  <div class="admin-app" id="adminApp" style="display: none;">
+    <a class="skip-link" href="#ordersHeading">ข้ามไปที่คำสั่งซื้อ</a>
+    <header class="admin-navbar">
+      <div class="nav-brand">
+        <span class="brand-mark">T10</span>
+        <div><span class="eyebrow">TRIAMDOD 10</span><h1>จัดการคำสั่งซื้อ</h1></div>
+      </div>
+      <nav class="nav-actions" aria-label="บัญชีผู้ดูแล">
+        <span class="account-email" id="adminAccountEmail"></span>
+        <a class="btn btn-quiet" href="index.html" target="_blank" rel="noopener">หน้าเว็บ ↗</a>
+        <button type="button" class="btn btn-quiet" id="btnLogoutAdmin">ออกจากระบบ</button>
+      </nav>
+    </header>
+    <main class="admin-workspace">
+      <section class="summary-grid" aria-label="ภาพรวมคำสั่งซื้อทุกหน้า">
+        <button type="button" class="metric" data-status="all" aria-pressed="true">
+          <span class="metric-label">คำสั่งซื้อทั้งหมด <span aria-hidden="true">↗</span></span>
+          <strong id="kpiTotalOrders">0</strong>
+          <span class="metric-note" id="kpiOrdersRatioMeta">นักเรียน 0 · ศิษย์เก่า 0</span>
+        </button>
+        <button type="button" class="metric metric-pending" data-status="pending" aria-pressed="false">
+          <span class="metric-label">รอตรวจสอบ <span aria-hidden="true">↗</span></span>
+          <strong id="kpiPendingOrders">0</strong>
+          <span class="metric-note">เปิดรายการที่ต้องตรวจ</span>
+        </button>
+        <div class="metric metric-revenue">
+          <span class="metric-label">ยอดเงินที่อนุมัติแล้ว</span>
+          <strong id="kpiTotalRevenue">฿0</strong>
+          <span class="metric-note">รวมทุกคำสั่งซื้อที่ผ่านแล้ว</span>
+        </div>
+        <button type="button" class="metric metric-rejected" data-status="rejected" aria-pressed="false">
+          <span class="metric-label">ปฏิเสธสลิป <span aria-hidden="true">↗</span></span>
+          <strong id="kpiRejectedOrders">0</strong>
+          <span class="metric-note">เปิดดูหรือแก้ผลการตรวจ</span>
+        </button>
+      </section>
+      <div class="dashboard-tools">
+        <details class="utility-panel" id="inventoryPanel">
+          <summary><span>ยอดผลิตเสื้อ</span><span class="summary-note" id="kpiTotalShirts">อนุมัติแล้ว 0 ตัว</span></summary>
+          <div class="utility-content">
+            <p class="muted">นับเฉพาะคำสั่งซื้อที่อนุมัติแล้ว รวมทุกหน้า</p>
+            <div class="inventory-scroll">
+              <table class="inventory-table">
+                <caption class="sr-only">จำนวนเสื้อแยกตามสีและขนาด</caption>
+                <thead><tr><th scope="col">สี</th><th scope="col">S</th><th scope="col">M</th><th scope="col">L</th><th scope="col">XL</th><th scope="col">2XL</th><th scope="col">รวม</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row"><span class="color-dot brown"></span>Espresso</th><td id="cntBrownS">0</td><td id="cntBrownM">0</td><td id="cntBrownL">0</td><td id="cntBrownXL">0</td><td id="cntBrown2XL">0</td><td id="sumBrownTotal">0 ตัว</td></tr>
+                  <tr><th scope="row"><span class="color-dot beige"></span>Sand Beige</th><td id="cntBeigeS">0</td><td id="cntBeigeM">0</td><td id="cntBeigeL">0</td><td id="cntBeigeXL">0</td><td id="cntBeige2XL">0</td><td id="sumBeigeTotal">0 ตัว</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+        <details class="utility-panel" id="ownerAccessPanel" hidden>
+          <summary><span>จัดการผู้ดูแล</span><span class="summary-note">เจ้าของบัญชี</span></summary>
+          <div class="utility-content">
+            <p class="muted" id="ownerAccountLabel"></p>
+            <form id="adminAccessForm" class="admin-access-form">
+              <label for="adminEmailInput">อีเมลผู้ดูแล</label>
+              <div class="input-action"><input type="email" id="adminEmailInput" maxlength="254" required autocomplete="off" placeholder="name@gmail.com"><button type="submit" class="btn" id="btnAddAdmin">เพิ่มผู้ดูแล</button></div>
+            </form>
+            <p class="muted">ผู้ดูแลตรวจสอบสลิปได้ หลังเข้าสู่ระบบด้วยอีเมลที่เพิ่มไว้</p>
+            <p id="adminListStatus" class="inline-status" role="status"></p>
+            <div id="adminAccessList"></div>
+          </div>
+        </details>
+      </div>
+      <section class="orders-panel" aria-labelledby="ordersHeading">
+        <div class="orders-heading">
+          <div><h2 id="ordersHeading" tabindex="-1">คำสั่งซื้อ</h2><p class="muted" id="tableCountInfo">เรียงจากรายการล่าสุด · สรุปด้านบนรวมทุกหน้า</p></div>
+          <div class="toolbar-actions">
+            <span class="updated-at" id="adminUpdatedAt"></span>
+            <button type="button" class="btn" id="btnRefreshOrders">รีเฟรช</button>
+            <button type="button" class="btn" id="btnExportCsv" disabled title="ดาวน์โหลด CSV เฉพาะหน้าที่แสดง">CSV หน้านี้ ↓</button>
+          </div>
+        </div>
+        <div class="filter-bar" role="search" aria-label="ค้นหาและกรองคำสั่งซื้อ">
+          <label class="search-field" for="adminSearchInput"><span>ค้นหาคำสั่งซื้อ</span><input type="search" id="adminSearchInput" placeholder="ชื่อ อีเมล รหัสนักเรียน หรือรหัสคำสั่งซื้อ" autocomplete="off"></label>
+          <label class="filter-field" for="filterStatus"><span>สถานะ</span>
+            <select id="filterStatus"><option value="all">ทั้งหมด</option><option value="pending">รอตรวจสอบ</option><option value="approved">อนุมัติแล้ว</option><option value="rejected">ปฏิเสธสลิป</option></select>
+          </label>
+          <label class="filter-field" for="filterRole"><span>กลุ่มผู้ซื้อ</span>
+            <select id="filterRole"><option value="all">ทุกกลุ่ม</option><option value="student-current">นักเรียนทั้งหมด</option><option value="student-m4">นักเรียน ม.4</option><option value="student-m5">นักเรียน ม.5</option><option value="student-m6">นักเรียน ม.6</option><option value="alumni">ศิษย์เก่า</option></select>
+          </label>
+          <label class="filter-field" for="filterPackage"><span>แพ็กเกจ</span>
+            <select id="filterPackage"><option value="all">ทุกแพ็กเกจ</option><option value="1">บัตร 99.-</option><option value="2">บัตร + ของที่ระลึก 129.-</option><option value="3">บัตร + เสื้อ + ของที่ระลึก 359.-</option><option value="4">เสื้อศิษย์เก่า 329.-</option><option value="5">เสื้อ + ของที่ระลึก 359.-</option></select>
+          </label>
+          <button type="button" class="btn btn-quiet" id="btnClearFilters" hidden>ล้างตัวกรอง</button>
+        </div>
+        <p id="adminStatus" class="admin-status" role="status"></p>
+        <div id="ordersTableSection" hidden>
+          <div class="table-scroll-container">
+            <table class="admin-data-table" id="ordersTable">
+              <caption class="sr-only">รายการคำสั่งซื้อ เลือกตรวจสอบเพื่อดูรายละเอียด สลิป หรือเปลี่ยนสถานะ</caption>
+              <thead><tr><th scope="col">ผู้ซื้อ</th><th scope="col">แพ็กเกจ</th><th scope="col">ยอด / ส่งเมื่อ</th><th scope="col">สถานะ / ผู้ตรวจสอบ</th><th scope="col"><span class="sr-only">การตรวจสอบ</span></th></tr></thead>
+              <tbody id="ordersTableBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span class="muted">เปลี่ยนผลอนุมัติหรือปฏิเสธได้ในหน้าตรวจสอบ</span>
+            <div class="pagination" id="ordersPagination" aria-label="หน้าคำสั่งซื้อ" hidden><button type="button" class="btn" id="btnPrevOrders" disabled>← ก่อนหน้า</button><span id="ordersPageInfo">หน้า 1</span><button type="button" class="btn" id="btnNextOrders" hidden>ถัดไป →</button></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="admin-modal-backdrop" id="slipModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="slipModalTitle" tabindex="-1">
+    <section class="admin-modal-card">
+      <header class="admin-modal-header">
+        <h2 id="slipModalTitle">ตรวจสอบคำสั่งซื้อ</h2>
+        <div class="slip-navigation"><button type="button" class="btn btn-quiet" id="btnPreviousSlip" aria-label="คำสั่งซื้อก่อนหน้า">←</button><span id="slipPosition"></span><button type="button" class="btn btn-quiet" id="btnNextSlip" aria-label="คำสั่งซื้อถัดไป">→</button><button type="button" class="btn btn-quiet" id="btnCloseSlipModal" aria-label="ปิดหน้าตรวจสอบ">ปิด ×</button></div>
+      </header>
+      <div class="slip-inspector-body">
+        <div class="slip-img-column"><img id="slipInspectorImg" class="slip-big-img" alt="ภาพสลิปการโอนเงิน"><a id="slipOriginalLink" class="image-link" target="_blank" rel="noopener">เปิดภาพเต็ม ↗</a></div>
+        <div class="slip-meta-column">
+          <div class="buyer-heading"><h3 id="slipInspectName">-</h3><span class="order-reference" id="slipInspectOrderId">-</span></div>
+          <div class="slip-info-list">
+            <dl><dt>บัญชี / ข้อมูลผู้ซื้อ</dt><dd id="slipInspectMeta">-</dd></dl>
+            <dl id="slipInspectStudentInfo" class="student-info-grid" aria-label="ข้อมูลนักเรียน" hidden></dl>
+            <dl><dt>แพ็กเกจ</dt><dd id="slipInspectPackage">-</dd></dl>
+            <div class="payment-summary"><dl><dt>ยอดที่ต้องโอน</dt><dd id="slipInspectAmount">฿0.00</dd></dl><dl><dt>เวลาส่ง</dt><dd id="slipInspectTime">-</dd></dl></div>
+            <dl><dt>สถานะปัจจุบัน</dt><dd id="slipInspectStatus">-</dd></dl>
+            <dl id="slipInspectReviewerInfo" hidden><dt>ผู้ตรวจสอบล่าสุด</dt><dd id="slipInspectReviewer"></dd></dl>
+          </div>
+          <p id="slipReviewStatus" class="inline-status" role="status"></p>
+          <div class="inspector-actions-row"><button type="button" class="btn btn-approve" id="btnInspectApprove">อนุมัติ</button><button type="button" class="btn btn-reject" id="btnInspectReject">ปฏิเสธสลิป</button></div>
+          <label class="auto-next"><input type="checkbox" id="autoNextReview" checked> เปิดรายการรอตรวจถัดไปหลังบันทึก</label>
+          <section class="reject-panel" id="rejectPanel" hidden aria-labelledby="rejectHeading">
+            <h3 id="rejectHeading">เหตุผลที่ปฏิเสธ</h3>
+            <p class="muted">ผู้ซื้อจะเห็นเหตุผลนี้ในคำสั่งซื้อของฉัน</p>
+            <div class="reject-quick-pills" aria-label="เลือกเหตุผล"><button type="button" class="btn-quick-reason" data-reason="ยอดเงินที่โอนไม่ตรงกับราคาแพ็กเกจ">ยอดไม่ตรง</button><button type="button" class="btn-quick-reason" data-reason="ภาพสลิปไม่ชัดเจน มองไม่เห็นวันที่และเวลา">สลิปไม่ชัด</button><button type="button" class="btn-quick-reason" data-reason="ตรวจพบสลิปซ้ำซ้อนในระบบ">สลิปซ้ำ</button><button type="button" class="btn-quick-reason" data-reason="ไม่พบบัญชีปลายทางของสภานักเรียน">บัญชีไม่ถูกต้อง</button></div>
+            <label class="sr-only" for="rejectReasonTextarea">เหตุผลที่แจ้งผู้ซื้อ</label>
+            <textarea id="rejectReasonTextarea" maxlength="1000" rows="3" placeholder="ระบุเหตุผลที่แจ้งผู้ซื้อ" aria-describedby="rejectReasonError"></textarea>
+            <p id="rejectReasonError" class="inline-status error-text" role="alert"></p>
+            <div class="reject-actions"><button type="button" class="btn btn-quiet" id="btnCancelReject">ยกเลิก</button><button type="button" class="btn btn-reject" id="btnConfirmReject">บันทึกการปฏิเสธ</button></div>
+          </section>
+          <section class="review-history" aria-labelledby="reviewHistoryHeading">
+            <h3 id="reviewHistoryHeading">ประวัติการตรวจสอบ</h3>
+            <p id="reviewHistoryStatus" class="inline-status" role="status"></p>
+            <ol id="reviewHistoryList" class="review-history-list" hidden></ol>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

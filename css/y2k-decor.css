@@ -1,0 +1,539 @@
+/* --------------------------------------------------------------------------
+   TRIAMDOD 10 — RETRO FLOATING BACKGROUND ARTIFACTS
+   Concept 1: Holographic Rainbow CDs & Translucent Floating 3D Cassettes
+   Strict Zero-Emoji Policy | Real 3D Perspective & Iridescent Physics
+   -------------------------------------------------------------------------- */
+
+.y2k-decorations-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   1. HOLOGRAPHIC COMPACT DISC (CD) 3D PERSPECTIVE
+   ========================================================================== */
+.floating-cd-wrap {
+  position: absolute;
+  pointer-events: none;
+  perspective: 1200px;
+  filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.75));
+  transition: opacity 0.3s ease;
+  opacity: 0.75;
+}
+
+/* CD 1: Large Holographic Disc (Top-Right behind header/hero) */
+.cd-pos-top-right {
+  top: 5%;
+  right: -3%;
+  width: clamp(160px, 22vw, 260px);
+  height: clamp(160px, 22vw, 260px);
+  animation: floatCdTopRight 14s ease-in-out infinite;
+}
+
+/* CD 2: Medium Holographic Disc (Bottom-Left beside Nokia 3310) */
+.cd-pos-bottom-left {
+  top: 60%;
+  left: -3%;
+  width: clamp(130px, 17vw, 200px);
+  height: clamp(130px, 17vw, 200px);
+  animation: floatCdBottomLeft 16s ease-in-out infinite;
+}
+
+/* The 3D Disc Body */
+.retro-cd-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #27272a 0%, #18181b 28%, #3f3f46 68%, #18181b 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 18px 40px rgba(0, 0, 0, 0.75);
+  transform-style: preserve-3d;
+  animation: cd3dSpin 36s linear infinite;
+  overflow: hidden;
+}
+
+/* Iridescent Rainbow Diffraction Prism */
+.cd-rainbow-iridescent {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 0, 127, 0.42) 0deg,
+    rgba(0, 240, 255, 0.45) 45deg,
+    rgba(212, 255, 0, 0.42) 90deg,
+    rgba(255, 184, 48, 0.38) 135deg,
+    rgba(255, 0, 127, 0.42) 180deg,
+    rgba(0, 240, 255, 0.45) 225deg,
+    rgba(212, 255, 0, 0.42) 270deg,
+    rgba(59, 130, 246, 0.38) 315deg,
+    rgba(255, 0, 127, 0.42) 360deg
+  );
+  mix-blend-mode: screen;
+  opacity: 0.9;
+  animation: shimmerSpectrum 18s ease-in-out infinite alternate;
+}
+
+/* Microscopic Audio Data Grooves */
+.cd-grooves {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    inset 0 0 0 8px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 16px rgba(255, 255, 255, 0.05),
+    inset 0 0 0 28px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 44px rgba(255, 255, 255, 0.04);
+}
+
+/* Diagonal Specular Sheen Beam */
+.cd-specular-beam {
+  position: absolute;
+  inset: -60%;
+  background: linear-gradient(
+    45deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.25) 46%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0.25) 54%,
+    transparent 64%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  animation: sweepSheenBeam 9s ease-in-out infinite alternate;
+}
+
+/* Center Clear Hub & Mirror Ring */
+.cd-center-mirror {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32%;
+  height: 32%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(24, 24, 27, 0.95) 60%, rgba(255, 255, 255, 0.4) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cd-spindle-hole {
+  width: 44%;
+  height: 44%;
+  border-radius: 50%;
+  background: #0b0c0e;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.95);
+}
+
+/* ==========================================================================
+   2. TRANSLUCENT 3D FLOATING CASSETTE TAPES
+   ========================================================================== */
+.floating-tape-wrap {
+  position: absolute;
+  pointer-events: none;
+  perspective: 1200px;
+  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.8));
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+}
+
+/* Tape 1: Smoked Cyan Tint (Mid-Left beside TV) */
+.tape-pos-mid-left {
+  top: 26%;
+  left: -2%;
+  width: clamp(170px, 20vw, 240px);
+  height: clamp(110px, 13vw, 155px);
+  animation: floatTapeMidLeft 13s ease-in-out infinite;
+}
+
+/* Tape 2: Smoked Amber Pink Tint (Bottom-Right beside Ticket Section) */
+.tape-pos-bottom-right {
+  top: 76%;
+  right: -2%;
+  width: clamp(160px, 18vw, 220px);
+  height: clamp(100px, 11vw, 140px);
+  animation: floatTapeBottomRight 15s ease-in-out infinite;
+}
+
+.retro-tape-3d-shell {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 15px 35px rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px 6px;
+  transform-style: preserve-3d;
+}
+
+.tape-shell-pink {
+  border-color: rgba(255, 0, 127, 0.35);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 25px rgba(255, 0, 127, 0.15),
+    0 15px 35px rgba(0, 0, 0, 0.7);
+}
+
+.tape-screw-pin {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #71717a;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  z-index: 5;
+}
+.pin-tl { top: 6px; left: 6px; }
+.pin-tr { top: 6px; right: 6px; }
+.pin-bl { bottom: 6px; left: 6px; }
+.pin-br { bottom: 6px; right: 6px; }
+
+/* Translucent Tape Paper Label Strip */
+.tape-glass-label {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.glass-label-code {
+  font-family: var(--font-y2k);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+}
+
+.glass-label-badge {
+  font-family: var(--font-y2k);
+  font-size: 0.52rem;
+  font-weight: 800;
+  background: #ff007f;
+  color: #ffffff;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+/* Cassette Tape Spools Window */
+.tape-glass-window {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 14px;
+  position: relative;
+}
+
+.tape-ribbon-bridge {
+  position: absolute;
+  top: 50%;
+  left: 28%;
+  right: 28%;
+  height: 12px;
+  background: #3b2014;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+.tape-spool-gear {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #a1a1aa;
+  background: #18181b;
+  position: relative;
+  z-index: 2;
+}
+
+.tape-spool-gear::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1.5px dashed #ffffff;
+  border-radius: 50%;
+  animation: spinSpoolMini 7s linear infinite;
+}
+
+/* Translucent Tape Chin */
+.tape-glass-chin {
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.chin-roller-dot {
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+   3. METALLIC CHROME SPARKLES (SUBTLE ACCENTS IN DEPTH)
+   ========================================================================== */
+.floating-sparkle-accent {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+}
+
+.sparkle-top-left {
+  top: 12%;
+  left: 4%;
+  width: 70px;
+  height: 70px;
+  animation: pulseSpinSparkle 16s ease-in-out infinite;
+}
+
+.sparkle-mid-right {
+  top: 48%;
+  right: 4%;
+  width: 75px;
+  height: 75px;
+  animation: pulseSpinSparkle 20s ease-in-out infinite reverse;
+}
+
+/* ==========================================================================
+   4. KEYFRAME ANIMATIONS (60FPS GPU ACCELERATED)
+   ========================================================================== */
+@keyframes cd3dSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shimmerSpectrum {
+  0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.04) rotate(180deg); opacity: 0.95; }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.8; }
+}
+
+@keyframes sweepSheenBeam {
+  0% { transform: rotate(20deg) translateY(-25px); opacity: 0.45; }
+  100% { transform: rotate(32deg) translateY(25px); opacity: 0.85; }
+}
+
+@keyframes spinSpoolMini {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes floatCdTopRight {
+  0%, 100% { transform: rotateX(46deg) rotateY(-24deg) rotateZ(10deg) translateY(0px); }
+  50% { transform: rotateX(38deg) rotateY(-18deg) rotateZ(16deg) translateY(-20px); }
+}
+
+@keyframes floatCdBottomLeft {
+  0%, 100% { transform: rotateX(38deg) rotateY(24deg) rotateZ(-12deg) translateY(0px); }
+  50% { transform: rotateX(44deg) rotateY(18deg) rotateZ(-8deg) translateY(-16px); }
+}
+
+@keyframes floatTapeMidLeft {
+  0%, 100% { transform: rotateX(24deg) rotateY(30deg) rotateZ(-10deg) translateY(0px); }
+  50% { transform: rotateX(30deg) rotateY(24deg) rotateZ(-6deg) translateY(-18px); }
+}
+
+@keyframes floatTapeBottomRight {
+  0%, 100% { transform: rotateX(-20deg) rotateY(-26deg) rotateZ(8deg) translateY(0px); }
+  50% { transform: rotateX(-26deg) rotateY(-20deg) rotateZ(12deg) translateY(-16px); }
+}
+
+@keyframes pulseSpinSparkle {
+  0%, 100% { transform: rotate(0deg) scale(0.95); opacity: 0.25; }
+  50% { transform: rotate(180deg) scale(1.1); opacity: 0.45; }
+}
+
+/* ==========================================================================
+   5. MOBILE & TABLET RESPONSIVE DECOR SCALING
+   Strict Zero-Emoji Policy | Pure CSS Proportional 3D Geometry
+   ========================================================================== */
+@media (max-width: 768px) {
+  .floating-cd-wrap {
+    opacity: 0.6;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
+  }
+
+  .cd-pos-top-right {
+    width: 140px;
+    height: 140px;
+    top: 4%;
+    right: -20px;
+  }
+
+  .cd-pos-bottom-left {
+    width: 110px;
+    height: 110px;
+    top: 62%;
+    left: -20px;
+  }
+
+  .floating-tape-wrap {
+    opacity: 0.55;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
+  }
+
+  .tape-pos-mid-left {
+    width: 130px;
+    height: 84px;
+    top: 28%;
+    left: -20px;
+  }
+
+  .tape-pos-bottom-right {
+    width: 120px;
+    height: 78px;
+    top: 78%;
+    right: -20px;
+  }
+
+  .sparkle-top-left {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sparkle-mid-right {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-cd-wrap {
+    opacity: 0.45;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.6));
+  }
+
+  .cd-pos-top-right {
+    width: 90px;
+    height: 90px;
+    top: 3.5%;
+    right: -16px;
+  }
+
+  .cd-pos-bottom-left {
+    width: 76px;
+    height: 76px;
+    top: 60%;
+    left: -16px;
+  }
+
+  .floating-tape-wrap {
+    opacity: 0.42;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.6));
+  }
+
+  .tape-pos-mid-left {
+    width: 98px;
+    height: 63px;
+    top: 24%;
+    left: -16px;
+  }
+
+  .tape-pos-bottom-right {
+    width: 92px;
+    height: 60px;
+    top: 76%;
+    right: -16px;
+  }
+
+  .retro-tape-3d-shell {
+    padding: 4px 6px 3px;
+    border-radius: 8px;
+  }
+
+  .tape-screw-pin {
+    width: 4px;
+    height: 4px;
+  }
+  .pin-tl { top: 4px; left: 4px; }
+  .pin-tr { top: 4px; right: 4px; }
+  .pin-bl { bottom: 4px; left: 4px; }
+  .pin-br { bottom: 4px; right: 4px; }
+
+  .tape-glass-label {
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .glass-label-code {
+    font-size: 0.46rem;
+  }
+
+  .glass-label-badge {
+    font-size: 0.4rem;
+    padding: 1px 3px;
+  }
+
+  .tape-glass-window {
+    margin: 3px 0;
+    padding: 0 8px;
+    border-radius: 4px;
+  }
+
+  .tape-spool-gear {
+    width: 15px;
+    height: 15px;
+    border-width: 1px;
+  }
+
+  .tape-ribbon-bridge {
+    height: 7px;
+  }
+
+  .tape-glass-chin {
+    height: 10px;
+    gap: 6px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .chin-roller-dot {
+    width: 3px;
+    height: 3px;
+  }
+
+  .sparkle-top-left {
+    width: 36px;
+    height: 36px;
+    left: 2%;
+    top: 8%;
+  }
+
+  .sparkle-mid-right {
+    width: 38px;
+    height: 38px;
+    right: 2%;
+    top: 50%;
+  }
+}

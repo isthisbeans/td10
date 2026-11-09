@@ -1,0 +1,451 @@
+/* --------------------------------------------------------------------------
+   TV Console Integrated BGM Status (อยู่บนแผงควบคุมจอทีวีที่เดิม)
+   -------------------------------------------------------------------------- */
+.tv-bgm-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(8, 9, 12, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-y2k);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: #f0f0f3;
+  user-select: none;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.tv-bgm-indicator {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #ff007f;
+  background: rgba(255, 0, 127, 0.15);
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}
+
+.tv-bgm-status.playing .tv-bgm-indicator {
+  color: #d4ff00;
+  background: rgba(212, 255, 0, 0.18);
+}
+
+.tv-bgm-title {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.72rem;
+}
+
+.bgm-equalizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  padding-left: 2px;
+}
+
+.eq-bar {
+  width: 2.5px;
+  background: #ff007f;
+  border-radius: 1px;
+  /* Keep layout fixed while the visual bars rise and fall. */
+  height: 12px;
+  transform: scaleY(0.333333);
+  transform-origin: bottom;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.tv-bgm-status.playing .eq-bar {
+  background: linear-gradient(180deg, #d4ff00, #ff007f);
+  animation: equalize 0.8s ease-in-out infinite alternate;
+}
+
+.tv-bgm-status.playing .eq-1 { animation-delay: 0.1s; }
+.tv-bgm-status.playing .eq-2 { animation-delay: 0.35s; }
+.tv-bgm-status.playing .eq-3 { animation-delay: 0.15s; }
+.tv-bgm-status.playing .eq-4 { animation-delay: 0.45s; }
+
+@keyframes equalize {
+  0% { transform: scaleY(0.166667); }
+  50% { transform: scaleY(0.916667); }
+  100% { transform: scaleY(0.416667); }
+}
+
+.tv-bgm-status.muted {
+  opacity: 0.65;
+}
+
+.tv-bgm-status.muted .eq-bar {
+  transform: scaleY(0.166667);
+  background: #555;
+}
+
+.tv-bgm-status.muted .tv-bgm-indicator {
+  color: #888;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* --------------------------------------------------------------------------
+   CRT TV Container
+   -------------------------------------------------------------------------- */
+.crt-tv-container {
+  width: 100%;
+  max-width: 620px;
+  position: relative;
+  z-index: 30;
+}
+
+.tv-bezel {
+  background: #17181c;
+  background: linear-gradient(180deg, #25272e 0%, #151619 40%, #101114 100%);
+  border: 2px solid #32353e;
+  border-radius: 20px 20px 24px 24px;
+  padding: 16px 20px 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95),
+              inset 0 1px 3px rgba(255, 255, 255, 0.15),
+              0 0 0 1px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+.tv-vents-strip {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tv-vents-strip span {
+  width: 16px;
+  height: 3px;
+  background-color: #0a0b0d;
+  border-radius: 1px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.tv-screen-chassis {
+  background: #090a0c;
+  border-radius: 16px;
+  padding: 12px;
+  border: 3px solid #1a1b20;
+  box-shadow: inset 0 4px 16px rgba(0, 0, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.tv-screen-glass {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 380px;
+  background-color: #020304;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 0 40px var(--crt-glow),
+              inset 0 0 50px rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.tv-screen-glass:focus-visible {
+  outline: 2px solid #9ef7ad;
+  outline-offset: 4px;
+}
+
+.tv-screen-glass.power-off {
+  background-color: #040507 !important;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.98) !important;
+}
+
+.tv-screen-glass.power-off .crt-video {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.tv-screen-glass.power-off .osd-overlay,
+.tv-screen-glass.power-off .crt-scanlines,
+.tv-screen-glass.power-off .crt-vignette,
+.tv-screen-glass.power-off .crt-glitch-layer,
+.tv-screen-glass.power-off .noise-canvas {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.tv-screen-glass.crt-turning-off {
+  animation: crtTurnOff 0.35s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.tv-screen-glass.crt-turning-on {
+  animation: crtTurnOn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes crtTurnOff {
+  0% { transform: scale(1, 1); filter: brightness(1.2); }
+  50% { transform: scale(1, 0.004); filter: brightness(3); }
+  100% { transform: scale(0, 0); filter: brightness(0); }
+}
+
+@keyframes crtTurnOn {
+  0% { transform: scale(0, 0.01); filter: brightness(3); }
+  40% { transform: scale(1, 0.02); filter: brightness(2); }
+  100% { transform: scale(1, 1); filter: brightness(1); }
+}
+
+.crt-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.12) saturate(1.15) brightness(0.96);
+  transition: opacity 0.3s ease;
+}
+
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.3) 3px,
+    rgba(0, 0, 0, 0.3) 4px
+  );
+  z-index: 5;
+}
+
+.crt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,0.65) 90%, rgba(0,0,0,0.92) 100%),
+              linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%);
+  z-index: 6;
+}
+
+.crt-glitch-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: transparent;
+  z-index: 7;
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity 0.1s ease;
+}
+
+.crt-glitch-layer.glitch-active {
+  opacity: 0.35;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 255, 255, 0.1) 50%),
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+}
+
+.noise-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.noise-canvas.visible {
+  opacity: 0.75;
+}
+
+.osd-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+  font-family: var(--font-osd);
+  color: #38ef7d;
+  text-shadow: 0 0 8px rgba(56, 239, 125, 0.75), 0 0 2px #000;
+  letter-spacing: 0.08em;
+  font-size: 1.15rem;
+  transition: opacity 0.3s ease;
+}
+
+.osd-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.osd-play-status {
+  font-weight: 700;
+  animation: blinkStatus 1.8s infinite step-start;
+}
+
+@keyframes blinkStatus {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.osd-channel {
+  background: rgba(0, 0, 0, 0.55);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.osd-middle {
+  text-align: center;
+  font-size: 1.35rem;
+  color: #67e8f9;
+  text-shadow: 0 0 10px rgba(103, 232, 249, 0.8), 0 0 2px #000;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 12px;
+  align-self: center;
+  border-radius: 3px;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.osd-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+}
+
+.osd-sp {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.osd-tracking {
+  opacity: 0.85;
+}
+
+.osd-audio-tag {
+  color: #fde047;
+  text-shadow: 0 0 8px rgba(253, 224, 71, 0.7);
+}
+
+.tv-controls-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding: 6px 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.tv-logo {
+  display: flex;
+  flex-direction: column;
+}
+
+.tv-brand {
+  font-family: var(--font-y2k);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #9496a1;
+}
+
+.tv-model {
+  font-family: monospace;
+  font-size: 0.55rem;
+  color: #555760;
+  letter-spacing: 0.1em;
+}
+
+.tv-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.tv-btn {
+  background: #25262c;
+  border: 1px solid #3d404b;
+  border-radius: 4px;
+  color: #c4c7d0;
+  padding: 6px 10px;
+  font-family: var(--font-y2k);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 50;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tv-btn:hover {
+  background: #31333a;
+  color: #fff;
+  border-color: #525663;
+}
+
+.tv-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.tv-btn .btn-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.power-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  transition: all 0.3s ease;
+}
+
+.power-led.off {
+  background-color: #ef4444;
+  box-shadow: 0 0 6px #ef4444;
+}
+
+.tv-btn-power,
+.tv-btn-audio {
+  position: relative;
+}
+
+.btn-arrow {
+  font-size: 0.62rem;
+  line-height: 1;
+}
+
+.btn-text {
+  font-family: var(--font-y2k);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}

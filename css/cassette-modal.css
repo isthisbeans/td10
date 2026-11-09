@@ -1,0 +1,1672 @@
+/* ==========================================================================
+   TRIAMDOD 10 — RETRO CASSETTE TAPE AUTH & TICKET DECK MODAL
+   Design: Single Fitted Cassette (TDK D-C60 Aesthetic)
+   - Tape B: Special Edition Neon Hot Pink (สมัครสมาชิก & รับสิทธิ์จองบัตร)
+   - Tape C: Amber Gold Confirmation; Tape D: Blue Payment; Tape E: Green Orders
+   - Layered cassette backs; only the front cassette is interactive
+   - Ruled Label Paper with Handwritten Pencil / Ballpoint Fields ('Mali' / 'Caveat')
+   - Screws, Guide Holes, Clear Tape Window with Spinning Spools
+   ========================================================================== */
+
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 9, 12, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 2200;
+  /* Keep the closed sign-in frame measurable so Google can render in advance. */
+  display: flex !important;
+  visibility: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.auth-modal-backdrop.active {
+  display: flex !important;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+.auth-modal-backdrop.google-button-pending .cassette-deck-modal {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   The Cassette Deck Housing Console
+   -------------------------------------------------------------------------- */
+.cassette-deck-modal {
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  animation: deckSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: auto;
+}
+
+@keyframes deckSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Fitted Cassette Stage
+   -------------------------------------------------------------------------- */
+.cassette-stack-stage {
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+}
+
+.cassette-tape-card {
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cassette-tape-card[hidden] {
+  display: none;
+}
+
+/* Active Tape (Front & Center) */
+.cassette-tape-card.active-front {
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.55));
+  animation: cassetteToFront .38s cubic-bezier(.2,.7,.25,1);
+}
+
+/* Keep the login button still while Google's sign-in frame initializes. */
+.auth-modal-backdrop.account-entry-open .cassette-deck-modal,
+.auth-modal-backdrop.account-entry-open .cassette-tape-card.active-front {
+  animation: none;
+}
+
+@keyframes cassetteToFront {
+  from { opacity: .6; transform: translate(12px, 14px) rotate(3deg) scale(.97); }
+  to { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+.cassette-stack-preview {
+  position: absolute;
+  inset: 8px 5px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cassette-backplate {
+  --back-shell: #183b33;
+  --back-edge: #5aab94;
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--back-edge);
+  border-radius: 14px;
+  background: var(--back-shell);
+  box-shadow: inset 0 2px 3px #ffffff30, 0 12px 24px #0007;
+  transition: border-color .38s ease, background-color .38s ease;
+}
+
+.cassette-backplate::before {
+  content: '';
+  position: absolute;
+  inset: 14px 16px 42px;
+  border: 1px solid var(--back-edge);
+  border-radius: 8px;
+  background: #eee9dc;
+  box-shadow: inset 0 2px 4px #0002;
+}
+
+.cassette-backplate::after {
+  content: '';
+  position: absolute;
+  inset: auto 24px 10px;
+  height: 18px;
+  border-top: 1px solid var(--back-edge);
+  background: radial-gradient(circle at 20% 50%, #080c11 0 3px, transparent 4px), radial-gradient(circle at 50% 50%, #080c11 0 3px, transparent 4px), radial-gradient(circle at 80% 50%, #080c11 0 3px, transparent 4px);
+}
+
+.cassette-back-label { position: absolute; top: 23px; left: 30px; color: #332d26; font: 700 .7rem 'Space Grotesk', sans-serif; letter-spacing: .06em; }
+.backplate-near { z-index: 3; transform: translate(12px, 14px) rotate(4deg) scale(.98); }
+.backplate-middle { z-index: 2; transform: translate(-12px, 10px) rotate(-4deg) scale(.96); }
+.backplate-far { z-index: 1; transform: translate(4px, -8px) rotate(7deg) scale(.94); }
+.cassette-backplate[data-tape="register"] { --back-shell: #43112a; --back-edge: #c32965; }
+.cassette-backplate[data-tape="confirmation"] { --back-shell: #291f0e; --back-edge: #b96e16; }
+.cassette-backplate[data-tape="payment"] { --back-shell: #203e59; --back-edge: #528aaa; }
+.cassette-backplate[data-tape="orders"] { --back-shell: #183b33; --back-edge: #5aab94; }
+
+@media (max-width: 700px) {
+  .backplate-near { transform: translate(5px, 10px) rotate(1.4deg) scale(.99); }
+  .backplate-middle { transform: translate(-5px, 5px) rotate(-1.4deg) scale(.98); }
+  .backplate-far { transform: translate(2px, -5px) rotate(2deg) scale(.97); }
+}
+
+/* --------------------------------------------------------------------------
+   Physical Cassette Outer Shell
+   -------------------------------------------------------------------------- */
+.tape-shell {
+  position: relative;
+  border-radius: 14px;
+  padding: 18px 20px 24px 20px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.35),
+              inset 0 -3px 6px rgba(0, 0, 0, 0.5),
+              0 8px 24px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  user-select: none;
+}
+
+/* Tape B Shell: Special Edition Neon Magenta / Hot Pink */
+.shell-neon-pink {
+  background: linear-gradient(180deg, #ff1a8c 0%, #e60073 35%, #cc0066 70%, #99004d 100%);
+  border: 1px solid #73003a;
+  box-shadow: inset 0 2px 4px rgba(255, 200, 230, 0.5),
+              inset 0 -3px 6px rgba(0, 0, 0, 0.6),
+              0 0 30px rgba(255, 0, 127, 0.25);
+}
+
+/* 5 Metallic Screws with Philips Slots */
+.tape-screw {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #cbd5e1 45%, #64748b 85%, #334155 100%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), inset 0 0.5px 1px #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.tape-screw::before,
+.tape-screw::after {
+  content: '';
+  position: absolute;
+  background: #334155;
+}
+
+.tape-screw::before {
+  width: 8px;
+  height: 1.5px;
+}
+
+.tape-screw::after {
+  width: 1.5px;
+  height: 8px;
+}
+
+.screw-tl { top: 10px; left: 10px; transform: rotate(18deg); }
+.screw-tr { top: 10px; right: 10px; transform: rotate(72deg); }
+.screw-bl { bottom: 10px; left: 10px; transform: rotate(45deg); }
+.screw-br { bottom: 10px; right: 10px; transform: rotate(110deg); }
+.screw-bottom-mid { bottom: 8px; left: 50%; transform: translateX(-50%) rotate(30deg); }
+
+/* --------------------------------------------------------------------------
+   Cassette Paper Label (The Mixtape Ruled Paper)
+   -------------------------------------------------------------------------- */
+.tape-paper-label {
+  position: relative;
+  background: #faf7ee;
+  border-radius: 8px;
+  padding: 16px 20px 14px 20px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tape-paper-label.label-warm-cream {
+  background: #fffdf7;
+}
+
+/* Label Top Header Row */
+.label-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 8px;
+}
+
+
+
+.label-title-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.brand-code-print {
+  font-family: 'Space Grotesk', monospace;
+  font-size: clamp(0.78rem, 2.5vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.brand-sub-print {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.label-tech-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.tech-tag {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.06em;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.tech-tag.pink-tag {
+  color: #be123c;
+  background: rgba(255, 0, 127, 0.08);
+}
+
+/* Vintage Racing Stripe Under Label */
+.tape-racing-stripe {
+  display: flex;
+  flex-direction: column;
+  height: 6px;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: -6px;
+  margin-bottom: 2px;
+}
+
+.stripe-bar {
+  height: 3px;
+  width: 100%;
+}
+
+.stripe-magenta { background: #ff007f; }
+.stripe-silver { background: #94a3b8; }
+
+/* --------------------------------------------------------------------------
+   Handwritten Pencil & Pen Form on Ruled Tape Lines
+   -------------------------------------------------------------------------- */
+.tape-pencil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pencil-field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.pencil-guide-label {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #334155;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lbl-track {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #94a3b8;
+}
+
+.pencil-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* Form Input & Select (Pridi Font as requested) */
+.pencil-input,
+.pencil-select {
+  width: 100%;
+  padding: 6px 4px 6px 2px;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px dashed rgba(100, 116, 139, 0.45);
+  font-family: var(--font-pridi), serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.2s ease;
+  border-radius: 0;
+  line-height: 1.35;
+}
+
+.pencil-input::placeholder {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(100, 116, 139, 0.55);
+  font-style: normal;
+}
+
+.pencil-input:focus,
+.pencil-select:focus {
+  border-bottom-color: #ff007f;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  background: rgba(255, 0, 127, 0.03);
+}
+
+.pencil-select {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.pencil-select option {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Center Tape Window with Spools
+   -------------------------------------------------------------------------- */
+.tape-window-compartment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0 2px 0;
+}
+
+.tape-window-frame {
+  width: 100%;
+  max-width: 280px;
+  height: 52px;
+  background: #111317;
+  border: 2px solid #5a5f6b;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+
+.tape-window-frame.pink-window {
+  border-color: #ff2457;
+  background: #351321;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9),
+              0 0 8px rgba(255, 36, 87, 0.65),
+              0 0 22px rgba(255, 36, 87, 0.35);
+}
+
+/* Spool Gears */
+.tape-reel-spool {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s linear;
+}
+
+.spool-cog {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #111317;
+  position: relative;
+}
+
+.spool-cog::before,
+.spool-cog::after {
+  content: '';
+  position: absolute;
+  background: #ffffff;
+}
+
+.spool-cog::before {
+  top: 50%;
+  left: -4px;
+  right: -4px;
+  height: 3px;
+  transform: translateY(-50%);
+}
+
+.spool-cog::after {
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  transform: translateX(-50%);
+}
+
+/* Spinning Animation for Reels */
+.spinning .tape-reel-spool {
+  animation: reelSpin 2s linear infinite;
+}
+
+@keyframes reelSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Center Magnetic Ribbon & Stamp */
+.tape-magnetic-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #2a1b14 0%, #3e271d 50%, #2a1b14 100%);
+  height: 14px;
+  flex: 1;
+  margin: 0 10px;
+  border-radius: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.tape-counter-stamp {
+  font-family: 'Space Grotesk', 'VT323', monospace;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: #fbbf24;
+  letter-spacing: 0.1em;
+}
+
+.tape-eject-button {
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tape-eject-button:hover {
+  border-color: #ff6688;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9),
+              0 0 12px rgba(255, 36, 87, 0.85),
+              0 0 30px rgba(255, 36, 87, 0.5);
+}
+
+.tape-eject-button:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Tape Footer Actions (Tactile Cassette Play/Rec Buttons)
+   -------------------------------------------------------------------------- */
+.tape-footer-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Mechanical Cassette Action Button */
+.mechanical-icon.is-save-dot {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+  font-size: 0;
+}
+
+.btn-tape-mechanical {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.btn-play-action {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  border: 1px solid #334155;
+}
+
+.btn-play-action:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+}
+
+.btn-rec-action {
+  background: linear-gradient(135deg, #ff007f 0%, #e11d48 100%);
+  color: #ffffff;
+  border: 1px solid #be123c;
+  box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35);
+}
+
+.btn-rec-action:hover {
+  background: linear-gradient(135deg, #ff1a8c 0%, #f43f5e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 0, 127, 0.5);
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* --------------------------------------------------------------------------
+   Trapezoid Cassette Bottom Chin
+   -------------------------------------------------------------------------- */
+.tape-trapezoid-chin {
+  position: relative;
+  width: 64%;
+  height: 22px;
+  margin: 10px auto -6px auto;
+  background: #6e727a;
+  clip-path: polygon(6% 0%, 94% 0%, 100% 100%, 0% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 24px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.tape-trapezoid-chin.pink-chin {
+  background: #99004d;
+}
+
+.chin-roller-hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111317;
+  box-shadow: inset 0 1px 2px #000000;
+}
+
+.chin-drive-hole {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #111317;
+  box-shadow: inset 0 1px 2px #000000;
+}
+
+/* ==========================================================================
+   AMBER GOLD CONFIRMATION; SHARED PAYMENT / SLIP COMPONENTS
+   ========================================================================== */
+.shell-gold-amber {
+  background: linear-gradient(145deg, #241c0e 0%, #171309 50%, #291f0e 100%);
+  border: 3px solid #d97706;
+  box-shadow: 0 0 25px rgba(217, 119, 6, 0.22), inset 0 2px 4px rgba(251, 191, 36, 0.3);
+}
+
+.shell-gold-amber .tape-screw {
+  background: radial-gradient(circle, #fde68a 0%, #d97706 70%, #92400e 100%);
+}
+
+.gold-chin {
+  background: linear-gradient(180deg, #1f170c 0%, #151007 100%);
+  border-top: 2px solid #b45309;
+}
+
+.gold-chin .chin-roller-hole {
+  background: #0d0a05;
+  border: 2px solid #78350f;
+}
+
+.gold-chin .chin-drive-hole {
+  background: #0d0a05;
+  border: 1px solid #78350f;
+}
+
+.label-gold-cream {
+  background: #fffdf7;
+  border: 1px solid #d97706;
+}
+
+
+
+.gold-tag {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.stripe-bar.stripe-amber {
+  background: #f59e0b;
+}
+
+.stripe-bar.stripe-gold {
+  background: #d97706;
+}
+
+/* Payment and slip deck. */
+.tape-payment-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.payment-flex-deck {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.promptpay-qr-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.promptpay-card-header {
+  width: 100%;
+  background: linear-gradient(135deg, #003b70 0%, #001f3f 100%);
+  color: #ffffff;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.promptpay-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  text-align: left;
+}
+
+.pp-title {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pp-sub {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+.thai-qr-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.promptpay-qr-image-wrap {
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.promptpay-qr-svg {
+  width: 128px;
+  height: 128px;
+  display: block;
+}
+
+.promptpay-info-group {
+  padding: 4px 8px 8px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  border-top: 1px solid #f1f5f9;
+}
+
+.pp-amount-badge {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  color: #0f172a;
+}
+
+.pp-bold {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #003b70;
+}
+
+.pp-account-name {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.65rem;
+  color: #475569;
+  line-height: 1.2;
+}
+
+.pp-account-id {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Slip Uploader Card */
+.slip-uploader-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.slip-guide-title {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.slip-dropzone {
+  flex: 1;
+  min-height: 130px;
+  border: 2px dashed #d97706;
+  border-radius: 8px;
+  background: rgba(217, 119, 6, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.slip-dropzone:hover,
+.slip-dropzone.drag-over {
+  background: rgba(217, 119, 6, 0.1);
+  border-color: #b45309;
+}
+
+.slip-hidden-file {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.slip-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.slip-icon-badge {
+  font-size: 1.6rem;
+}
+
+.slip-cta-text {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.slip-hint-text {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  color: #78350f;
+  opacity: 0.8;
+}
+
+/* Slip Preview State */
+.slip-preview-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  z-index: 6;
+}
+
+.slip-thumbnail-img {
+  width: 72px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #d97706;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.slip-preview-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.slip-badge-ok {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.slip-name-label {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  font-size: 0.74rem;
+  color: #475569;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-slip-reselect {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.75rem;
+  color: #b45309;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.slip-rules-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  color: #78350f;
+  line-height: 1.35;
+  background: #fffbeb;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #fef3c7;
+}
+
+.notice-pin {
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* Tape Button Back */
+.btn-tape-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-tape-back:hover {
+  background: #cbd5e1;
+  color: #0f172a;
+}
+
+.btn-pay-confirm {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4) !important;
+}
+
+.btn-pay-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.5) !important;
+}
+
+/* Saved receipt and review status. */
+.tape-approval-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.approval-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.approval-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d97706;
+  box-shadow: 0 0 8px #d97706;
+  animation: pulseAmber 1.4s infinite ease-in-out;
+}
+
+@keyframes pulseAmber {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+.approval-badge-txt {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #92400e;
+  letter-spacing: 0.05em;
+}
+
+.approval-council-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.approval-council-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.approval-council-text {
+  text-align: left;
+}
+
+.approval-title {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.approval-council-sub {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  color: #64748b;
+  margin: 2px 0 0 0;
+}
+
+.approval-callout-box {
+  background: #fefce8;
+  border-left: 4px solid #ca8a04;
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  text-align: left;
+}
+
+.callout-strong {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #854d0e;
+  margin-bottom: 4px;
+}
+
+.callout-sub {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.8rem;
+  color: #713f12;
+  line-height: 1.45;
+}
+
+.approval-summary-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.summary-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-cell.cell-full {
+  grid-column: 1 / -1;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 6px;
+  margin-top: 2px;
+}
+
+.summary-key {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.summary-val {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.summary-slip-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-thumb-img {
+  width: 44px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+}
+
+.summary-slip-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.slip-ok-text {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #15803d;
+}
+
+.slip-time-text {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design for Cassette Modal
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .cassette-deck-modal {
+    max-width: 100%;
+  }
+
+  .tape-shell {
+    padding: 14px 12px 18px 12px;
+  }
+
+  .tape-paper-label {
+    padding: 12px 12px 10px 12px;
+  }
+
+  .payment-flex-deck {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .promptpay-qr-card {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  .approval-summary-card {
+    grid-template-columns: 1fr;
+  }
+
+  .tape-footer-action-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .btn-tape-mechanical {
+    justify-content: center;
+    width: 100%;
+  }
+
+
+}
+
+/* ==========================================================================
+   GOOGLE AUTH & REGISTRATION STYLES
+   ========================================================================== */
+
+/* Tape B Google Sign-In View */
+.account-signin-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+}
+
+.auth-browser-toggle {
+  min-height: 44px;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: #8b2452;
+  font: .82rem var(--font-thai);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.auth-browser-help {
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+  border: 1.5px solid #cd709b;
+  border-radius: 12px;
+  background: #fff5fa;
+  color: #49333e;
+  font-family: var(--font-thai);
+  font-size: .85rem;
+  line-height: 1.7;
+  text-align: left;
+}
+.auth-browser-help h3 { margin: 0 0 8px; font-size: 1rem; }
+.auth-browser-help p { margin: 8px 0; }
+.auth-browser-help label { display: block; margin-top: 12px; }
+.auth-browser-help input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid #cd709b;
+  border-radius: 6px;
+  background: #fff;
+  color: #49333e;
+  font-size: 16px;
+}
+.auth-browser-open, .auth-browser-copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid #a63065;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.auth-browser-open { background: #a63065; color: #fff; }
+.auth-browser-copy { background: #fff; color: #8b2452; }
+.auth-browser-help[hidden], .auth-browser-open[hidden] { display: none; }
+
+.google-rule-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+  text-align: left;
+}
+
+.rule-chip-box {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.rule-student {
+  border-color: #93c5fd;
+  background: #f0f7ff;
+}
+
+.rule-alumni {
+  border-color: #fed7aa;
+  background: #fffaf0;
+}
+
+.rule-chip-tag {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.tag-student {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.tag-alumni {
+  background: #d97706;
+  color: #ffffff;
+}
+
+.rule-chip-body {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.8rem;
+  color: #1e293b;
+  line-height: 1.35;
+}
+
+.rule-small-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Student Confirmed Card */
+.student-verified-strip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  color: #15803d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.verified-icon {
+  background: #15803d;
+  color: #ffffff;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+}
+
+.student-info-card {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.info-line-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.info-dual-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+}
+.info-dual-row .info-line-row { flex-wrap: wrap; }
+.info-dual-row .info-v { white-space: nowrap; }
+
+.info-k {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.78rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.info-v {
+  font-family: var(--font-pridi), serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.highlight-v {
+  font-size: 1.05rem;
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+.mono-v {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.78rem;
+  color: #334155;
+  background: #f1f5f9;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  word-break: break-all;
+}
+
+.info-auth-badge {
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.72rem;
+  color: #475569;
+  margin-top: 4px;
+}
+
+/* Alumni Google Strip */
+.alumni-google-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.alumni-acc-email {
+  font-weight: 700;
+  color: #78350f;
+}
+
+.highlight-val {
+  font-weight: 700 !important;
+  color: #b45309 !important;
+}
+
+.summary-sub-detail {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.75rem;
+  color: #64748b;
+  display: block;
+  margin-top: 2px;
+}
+
+
+
+@media (max-width: 680px) {
+  .google-rule-box {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+.account-signin-status {
+  color: #5f4c54;
+  font-family: var(--font-thai);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 0.75rem 0;
+  text-align: center;
+}
+
+.account-signin-status:empty {
+  display: none;
+}
+
+.profile-save-status {
+  margin: 0;
+  color: #5f4c54;
+  font-family: var(--font-thai);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.profile-save-status[hidden] {
+  display: none;
+}
+#summaryOrderId { overflow-wrap: anywhere; }
+
+/* Confirm the booth selection, then use the separate payment cassette. */
+.tape-confirmation-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #201b16;
+  font-weight: 700;
+  text-align: left;
+  user-select: text;
+}
+.tape-confirmation-view [hidden] { display: none !important; }
+.tape-c .brand-sub-print { color: #443426; font-weight: 700; }
+.tape-c .gold-tag { color: #4c2c0b; font-weight: 800; }
+.checkout-step-note {
+  margin: 0;
+  padding: 8px 0;
+  color: #443426;
+  font: 700 .73rem/1.6 'IBM Plex Sans Thai', sans-serif;
+  border-top: 1px dashed #d8bb8d;
+}
+.shell-cobalt-blue {
+  background: linear-gradient(145deg, #284f70 0%, #142c45 50%, #24455e 100%);
+  border: 3px solid #64a5ce;
+  box-shadow: 0 0 25px #407fa333, inset 0 2px 4px #c3e5fa66;
+}
+.shell-cobalt-blue .tape-screw {
+  background: radial-gradient(circle, #e5f5ff 0%, #78a9c8 65%, #34566e 100%);
+}
+.label-blue-cream { background: #f4f8fa; border-color: #6d9dbb; }
+.blue-tag { background: #e0eff7; border: 1px solid #8bb8d3; color: #1f506e; }
+.stripe-bar.stripe-cobalt { background: #285b83; }
+.stripe-bar.stripe-sky { background: #91c4df; }
+.blue-chin { background: linear-gradient(180deg, #203f59, #102335); border-top: 2px solid #4f87ab; }
+.blue-chin .chin-roller-hole, .blue-chin .chin-drive-hole { background: #091521; border-color: #4a7694; }
+.gold-window { border-color: #8f5a21; }
+.gold-window .tape-counter-stamp { color: #fbbf24; }
+.blue-window { border-color: #48738e; }
+.blue-window .tape-counter-stamp { color: #b4e2fb; text-shadow: 0 0 8px #64b5e788; }
+.payment-order-strip {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 12px;
+  padding: 11px 13px;
+  border: 1px solid #a7c5d7;
+  border-left: 4px solid #386f94;
+  border-radius: 7px;
+  background: #eaf2f6;
+  color: #294b62;
+  font: 500 .8rem/1.6 'IBM Plex Sans Thai', sans-serif;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.payment-order-kicker { font-size: .68rem; color: #4c6c80; }
+.payment-order-strip strong { font-size: .95rem; }
+.tape-d .promptpay-info-group { user-select: text; }
+.tape-d .btn-pay-confirm {
+  background: linear-gradient(135deg, #32668b, #204a6b) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px #285b8333 !important;
+}
+.tape-d .btn-pay-confirm:hover {
+  box-shadow: 0 6px 18px #285b8355 !important;
+}
+.tape-d .slip-dropzone { border-color: #709ab7; }
+.tape-d .slip-dropzone.drag-over { background: #e3f1f8; border-color: #2b709e; }
+
+.purchase-confirm-heading { display: grid; gap: 3px; }
+.purchase-confirm-kicker { justify-self: start; max-width: 100%; padding: 3px 8px; border: 1px solid #d8b771; border-radius: 4px; background: #fff2d3; color: #6b4015; font: 700 .67rem/1.6 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif; letter-spacing: .04em; overflow-wrap: anywhere; }
+.purchase-confirm-heading h2 { margin: 4px 0 0; font-size: 1.25rem; font-weight: 800; color: #322138; }
+.purchase-confirm-intro { margin: 0; color: #655a51; font-size: .82rem; font-weight: 500; }
+
+/* The selected items lead the review; buyer details sit on quieter paper. */
+.purchase-confirm-order { min-width: 0; padding: 16px; border: 1px solid #493650; border-left: 4px solid #e5b957; border-radius: 9px; background: #2e2034; color: #fff7e8; overflow-wrap: anywhere; }
+.purchase-confirm-product { min-width: 0; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed #77617c; }
+.purchase-confirm-product-label { display: block; margin-bottom: 6px; color: #f6ce73; font-size: .73rem; font-weight: 700; }
+.purchase-confirm-product h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 4vw, 1.3rem); font-weight: 800; line-height: 1.55; color: #fff7e8; overflow-wrap: anywhere; }
+.purchase-confirm-product p { margin: 0; color: #e2d6e2; font-size: .82rem; font-weight: 500; line-height: 1.7; }
+.purchase-confirm-details { display: grid; gap: 8px; margin: 0; }
+.purchase-confirm-details > div { display: grid; min-width: 0; grid-template-columns: 88px minmax(0, 1fr); align-items: baseline; gap: 10px; }
+.purchase-confirm-details dt { color: #6c625a; font-size: .78rem; font-weight: 600; }
+.purchase-confirm-details dd { min-width: 0; margin: 0; color: #40382f; font-size: .85rem; font-weight: 500; overflow-wrap: anywhere; white-space: pre-line; }
+.purchase-confirm-items dt { color: #d4bdc8; }
+.purchase-confirm-items dd { color: #fff7e8; font-weight: 700; }
+.purchase-confirm-items .purchase-confirm-shirt { padding: 10px; border: 1px solid #e5b957; border-radius: 5px; background: #fff0ce; }
+.purchase-confirm-shirt dt { color: #6a441c; }
+.purchase-confirm-shirt dd { color: #332115; font-weight: 800; }
+.purchase-confirm-buyer { padding: 12px; border: 1px solid #e0d6c8; border-radius: 7px; background: #fff9ed; }
+.purchase-confirm-total { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; padding: 12px 14px; border: 2px solid #a87525; border-radius: 8px; background: #f8d58a; color: #5b3412; font-size: .85rem; font-weight: 700; }
+.purchase-confirm-total strong { color: #3c2512; font: 800 clamp(1.65rem, 5vw, 1.95rem)/1.4 'Space Grotesk', sans-serif; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.tape-c .btn-pay-confirm { background: #322138 !important; color: #fff7e8 !important; box-shadow: 0 3px 0 #1e1124 !important; }
+.tape-c .btn-pay-confirm .mechanical-icon { color: #f6ce73; }
+.tape-c .btn-pay-confirm:hover { background: #493052 !important; box-shadow: 0 4px 0 #1e1124 !important; }
+.tape-confirmation-view :focus-visible { outline: 2px solid #b45309; outline-offset: 3px; }
+@media (max-width: 440px) {
+  .purchase-confirm-heading h2 { font-size: 1.1rem; }
+  .purchase-confirm-details > div { grid-template-columns: 72px minmax(0, 1fr); }
+  .checkout-step-note { font-size: .67rem; }
+}
+/* Account actions: logout, order history, then the phone booth. */
+.tape-footer-action-row.account-action-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+.account-action-row > button { justify-content: center; padding: 10px 9px; font-size: .8rem; line-height: 1.5; min-width: 0; }
+.account-action-row .back-icon { display: none; }
+.btn-account-orders { background: #e2eee6; border: 1px solid #7aa28f; color: #174c3c; font-weight: 700; }
+.btn-account-orders:hover { background: #d2e5d9; color: #12392e; }
+
+/* Jade-green order cassette. */
+.shell-jade-green { background: linear-gradient(145deg, #245448, #112f29 55%, #24483c); border: 3px solid #5aab94; box-shadow: 0 0 25px #42896c33, inset 0 2px 4px #b5ead066; }
+.shell-jade-green .tape-screw { background: radial-gradient(circle, #e4fff0 0%, #76b298 65%, #315b4a 100%); }
+.label-mint-cream { background: #f5fbf6; border-color: #81a692; }
+.tape-e .brand-sub-print { color: #3f6555; font-weight: 700; }
+.jade-tag { background: #e1f0e6; border: 1px solid #8db59d; color: #245740; }
+.stripe-bar.stripe-jade { background: #2f7056; }
+.stripe-bar.stripe-mint { background: #aad6b9; }
+.jade-chin { background: linear-gradient(180deg, #214a3e, #0e281f); border-top: 2px solid #4c8c70; }
+.jade-chin .chin-roller-hole, .jade-chin .chin-drive-hole { background: #091b13; border-color: #4e7c63; }
+.jade-window { border-color: #497d63; }
+.jade-window .tape-counter-stamp { color: #b7efd0; text-shadow: 0 0 8px #69b88d88; }
+.tape-e [hidden] { display: none !important; }
+.tape-orders-view { display: flex; flex-direction: column; gap: 12px; color: #193c2e; font-family: 'IBM Plex Sans Thai', sans-serif; text-align: left; user-select: text; }
+.orders-screen-heading { display: grid; gap: 4px; }
+.orders-kicker { color: #436853; font: 700 .68rem 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif; letter-spacing: .04em; }
+.orders-screen-heading h2 { margin: 0; color: #193c2e; font-size: 1.25rem; font-weight: 700; }
+.orders-account-email { margin: 0; color: #315743; font-size: .82rem; font-weight: 600; overflow-wrap: anywhere; }
+.orders-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-block: 1px dashed #a9c5b1; padding-block: 10px; }
+.orders-count { color: #315743; font-size: .82rem; font-weight: 700; }
+.orders-toolbar button { font-size: .78rem; }
+.orders-screen-status { margin: 0; color: #315743; font-size: .8rem; font-weight: 600; line-height: 1.6; }
+.orders-screen-status:empty { display: none; }
+.orders-empty-state { padding: 22px 16px; border: 1px dashed #9bb8a6; border-radius: 8px; background: #edf5ee; text-align: center; }
+.orders-empty-state strong { color: #244b36; font-size: 1rem; }
+.orders-empty-state p { margin: 6px 0 0; color: #42634d; font-size: .82rem; line-height: 1.7; }
+.order-history-list { display: grid; gap: 8px; max-height: min(48vh, 420px); overflow-y: auto; overscroll-behavior: contain; padding: 3px; }
+.order-history-card { display: grid; gap: 7px; width: 100%; padding: 12px; border: 1px solid #a4c2af; border-radius: 8px; background: #fffefa; color: #203a2b; font: 600 .82rem/1.6 'IBM Plex Sans Thai', sans-serif; text-align: left; cursor: pointer; }
+.order-history-card:hover { background: #edf6ef; border-color: #447b59; }
+.order-history-card:focus-visible, .btn-account-orders:focus-visible { outline: 2px solid #2c7050; outline-offset: 3px; }
+.order-history-heading, .order-history-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.order-history-package { min-width: 0; font-size: .9rem; font-weight: 700; overflow-wrap: anywhere; }
+.order-history-status { flex-shrink: 0; padding: 2px 8px; border-radius: 999px; color: #785006; background: #fff0c4; font-size: .72rem; font-weight: 700; }
+.order-history-status[data-status="approved"] { color: #165335; background: #dcf1e0; }
+.order-history-status[data-status="rejected"] { color: #8a2933; background: #f8e1e3; }
+.order-history-id { min-width: 0; color: #4b6553; font: 600 .66rem/1.6 'Space Grotesk', sans-serif; overflow-wrap: anywhere; }
+.order-history-price { color: #234d35; font: 700 .94rem 'Space Grotesk', sans-serif; white-space: nowrap; }
+.order-history-date { color: #536b59; font-size: .73rem; }
+#tapeEReceiptView { --receipt-status-bg: #fef3c7; --receipt-status-ink: #854d0e; --receipt-status-border: #f59e0b; --receipt-status-dot: #d97706; }
+#tapeEReceiptView[data-status="approved"] { --receipt-status-bg: #dcf1e0; --receipt-status-ink: #165335; --receipt-status-border: #6eaa7f; --receipt-status-dot: #32744b; }
+#tapeEReceiptView[data-status="rejected"] { --receipt-status-bg: #f8e1e3; --receipt-status-ink: #8a2933; --receipt-status-border: #cd8e98; --receipt-status-dot: #a84958; }
+#tapeEReceiptView .approval-header-badge { background: var(--receipt-status-bg); border-color: var(--receipt-status-border); }
+#tapeEReceiptView .approval-callout-box { background: var(--receipt-status-bg); border-left-color: var(--receipt-status-border); }
+#tapeEReceiptView .approval-badge-txt,
+#tapeEReceiptView .callout-strong,
+#tapeEReceiptView .callout-sub,
+#tapeEReceiptView #summaryPaidAmountText { color: var(--receipt-status-ink); }
+#tapeEReceiptView .approval-pulse-dot { background: var(--receipt-status-dot); box-shadow: 0 0 8px var(--receipt-status-dot); }
+#tapeEReceiptView[data-status="approved"] .approval-pulse-dot,
+#tapeEReceiptView[data-status="rejected"] .approval-pulse-dot { box-shadow: none; animation: none; }
+@media (max-width: 440px) {
+  .tape-footer-action-row.account-action-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .account-action-row > button:last-child { grid-column: 1 / -1; }
+  .order-history-heading { flex-wrap: wrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cassette-deck-modal, .cassette-tape-card.active-front { animation: none; }
+  .cassette-backplate { transition: none; }
+}

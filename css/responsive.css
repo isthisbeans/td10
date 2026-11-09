@@ -1,0 +1,259 @@
+/* Shared fitting rules. Artwork, colors and physical controls keep their theme. */
+.site-global-navbar { padding-top: env(safe-area-inset-top); }
+.page-container > *, .header-main > *, .ticket-main-section,
+.rack-section-header, .drawer-header-row > *, .footer-directory-container > * {
+  min-width: 0;
+}
+
+/* Auto margins center short dialogs and let tall ones scroll from their top. */
+.auth-modal-backdrop, .payphone-modal-backdrop, .polaroid-lightbox {
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+           max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  max-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-block: 64px 24px;
+}
+.payphone-modal-backdrop { justify-content: flex-start; }
+.payphone-floating-header { margin-top: auto; }
+.payphone-floating-dock { margin-bottom: auto; }
+.payphone-role-filter-row { flex-shrink: 0; }
+.polaroid-lightbox { align-items: flex-start; }
+.lightbox-card { margin: auto; flex-shrink: 0; }
+
+#btnGoogleSignIn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 280px;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+  /* Reserve the final button footprint before Google's iframe is inserted. */
+  line-height: 0;
+}
+#btnGoogleSignIn[hidden] { display: none; }
+.pencil-input, .pencil-select { min-width: 0; }
+.slip-preview-meta { min-width: 0; flex: 1; }
+.slip-name-label { max-width: 100%; }
+.info-line-row .info-v, .alumni-acc-email { min-width: 0; overflow-wrap: anywhere; }
+
+button:focus-visible, [role="button"]:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent-pink);
+  outline-offset: 3px;
+}
+button, a, [role="button"] { touch-action: manipulation; }
+
+@media (max-width: 1080px) {
+  html { scroll-padding-top: calc(84px + env(safe-area-inset-top)); }
+  .navbar-nav-group { max-height: calc(100vh - 72px); max-height: calc(100dvh - 72px - env(safe-area-inset-top)); }
+  .navbar-inner {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  .mobile-nav-toggle { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+  .nav-account-actions { flex-wrap: wrap; }
+  .nav-account-button { min-height: 44px; white-space: normal; text-align: center; }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 2.2rem max(1.1rem, env(safe-area-inset-right)) 4rem max(1.1rem, env(safe-area-inset-left));
+    gap: 2.6rem;
+    max-width: 100%;
+  }
+  .editorial-header { width: 100%; gap: 1.2rem; }
+  .header-main { align-items: center; gap: 1rem; }
+  .charm-image-frameless { max-width: 110px; max-height: 110px; }
+  .spoiler-bar, .spoiler-items { width: 100%; }
+  .spoiler-items { flex-wrap: wrap; gap: 6px; }
+  .spoiler-item { padding: 8px 10px; min-height: 44px; font-size: .76rem; }
+
+  /* All five units share the available width, including the four separators. */
+  .countdown-eyebrow { gap: 8px; }
+  .eyebrow-text { min-width: 0; font-size: .76rem; line-height: 1.6; }
+  .pulse-dot-pink { flex-shrink: 0; }
+  .splitflap-board {
+    --flap-height: clamp(54px, 13vw, 76px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(3px, 1vw, 8px);
+    max-width: 510px;
+  }
+  .splitflap-unit { min-width: 0; }
+  .splitflap-card { width: 100%; height: var(--flap-height); border-radius: 6px; }
+  .flap-char { font-size: clamp(1.9rem, 6.8vw, 3.2rem); }
+  .digit-thai-label { font-size: .68rem; margin-top: 6px; }
+  .splitflap-colon { display: flex; align-items: center; height: var(--flap-height); font-size: 1.25rem; transform: none; }
+  .countdown-sub-caption { font-size: .8rem; }
+
+  .tapes-stack-wrapper { width: calc(100% - 24px); }
+  .tape-item.active-tape { transform: translateX(8px) !important; }
+  .tape-label { min-width: 0; }
+  .tv-controls-panel { flex-wrap: wrap; gap: 12px; }
+
+  .ticket-card { flex-direction: column; min-height: auto; }
+  .ticket-main-section { padding: 1.5rem 1.3rem 1.2rem; }
+  .ticket-top-row { flex-wrap: wrap; gap: 8px; }
+  .ticket-headline-row { flex-wrap: wrap; gap: 8px; }
+  .price-row { gap: 12px; }
+  .price-type { flex: 1; min-width: 0; }
+  .tier-name, .tier-pill, .tier-note { white-space: normal; overflow-wrap: anywhere; line-height: 1.55; }
+  .price-value { flex-shrink: 0; }
+  .ticket-perforation { width: 100%; height: 22px; flex-direction: row; }
+  .perf-notch.top { top: 50%; left: -9px; transform: translateY(-50%); }
+  .perf-notch.bottom { top: 50%; bottom: auto; left: auto; right: -9px; transform: translateY(-50%); }
+  .perf-line { top: 50%; left: 14px; right: 14px; height: 1px; width: auto; border-left: none; border-top: 2px dashed #9e9686; }
+  .perf-text { writing-mode: horizontal-tb; transform: none; padding: 0 8px; }
+  .ticket-stub-section { width: 100%; border-left: none; border-top: 1.5px dashed #b5ada0; padding: 1.2rem 1.3rem; }
+  .stub-year { font-size: 1.2rem; }
+  .footer-caption { font-size: .85rem; white-space: normal; }
+
+  .rack-section-kicker, .merch-tag, .title-edition-badge { max-width: 100%; overflow-wrap: anywhere; }
+  .drawer-palette-selector { flex-wrap: wrap; gap: 10px; }
+  .palette-options { flex-wrap: wrap; gap: 8px; }
+  .color-chip-btn { min-height: 44px; }
+  .btn-drawer-reserve, .btn-notify-open, .btn-ticket-info { max-width: 100%; white-space: normal; text-align: center; }
+  .btn-drawer-reserve .btn-text { white-space: normal; }
+  .action-buttons { width: 100%; }
+  .footer-meta { flex-wrap: wrap; text-align: center; }
+
+  .auth-modal-backdrop .info-line-row { flex-wrap: wrap; gap: 3px 8px; }
+  .info-dual-row .info-v { white-space: normal; }
+  .alumni-google-strip { flex-wrap: wrap; }
+  .label-header-row { flex-wrap: wrap; align-items: flex-start; }
+  .label-tech-box { min-width: 0; }
+  .tech-tag { max-width: 100%; overflow-wrap: anywhere; }
+  .btn-tape-back, .btn-tape-mechanical, .btn-slip-reselect { min-height: 44px; white-space: normal; }
+  .pencil-input, .pencil-select { min-height: 44px; font-size: 16px; }
+  .slip-preview-state { flex-wrap: wrap; }
+  .slip-preview-meta { flex-basis: 120px; }
+  .order-history-list { max-height: none; overflow: visible; }
+}
+
+@media (max-width: 600px) {
+  .header-main { flex-direction: column; align-items: center; text-align: center; gap: .9rem; }
+  .title-group { width: 100%; display: flex; flex-direction: column; align-items: center; }
+  .title-line-wrap { justify-content: center; flex-wrap: nowrap; }
+  .title-brand { font-size: clamp(1.8rem, 8vw, 2.6rem); letter-spacing: -.01em; }
+  .title-ten { font-size: clamp(2.5rem, 11vw, 3.6rem); }
+  .title-subline { font-size: clamp(1.1rem, 4.5vw, 1.6rem); line-height: 1.4; }
+  .charm-image-frameless { max-width: 95px; max-height: 95px; }
+  .spoiler-items { justify-content: center; }
+  .lightbox-photo-frame { aspect-ratio: 1; }
+  .lightbox-close-btn { top: 8px; right: 8px; width: 44px; height: 44px; z-index: 2; }
+  .lightbox-card { padding: 14px 14px 20px; }
+  .lightbox-title { font-size: 1.1rem; }
+  .lightbox-meta-row { flex-wrap: wrap; gap: 6px; }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 1.6rem max(.85rem, env(safe-area-inset-right)) 3.5rem max(.85rem, env(safe-area-inset-left));
+    gap: 2.2rem;
+  }
+  .navbar-nav-group { padding: 1rem max(.85rem, env(safe-area-inset-right)) 1.25rem max(.85rem, env(safe-area-inset-left)); gap: 1rem; }
+  .spoiler-item { font-size: .72rem; padding-inline: 8px; }
+  .countdown-eyebrow { margin-bottom: .9rem; }
+  .eyebrow-line { display: none; }
+  .splitflap-countdown-section { padding-top: .8rem; }
+
+  .tv-bezel { padding: 12px 10px 14px; border-radius: 18px; }
+  .tv-screen-glass { aspect-ratio: 4 / 3; max-height: 240px; }
+  .osd-middle { font-size: 1.05rem; }
+  .tv-controls-panel { flex-direction: column; align-items: stretch; padding-inline: 0; }
+  .tv-buttons-group { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .tv-btn { min-width: 0; min-height: 44px; padding: 6px 4px; justify-content: center; gap: 4px; }
+  .tv-btn .btn-text { font-size: .6rem; }
+  .tv-bgm-status { align-self: flex-start; min-height: 44px; max-width: 100%; flex-wrap: wrap; }
+  .tape-item { height: 56px; }
+  .marker-text { font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .label-title, .flex-title, .label-title-bold { font-size: .88rem; }
+  .blue-pen-text { font-size: .92rem; }
+  .retro-color-bars { width: 52px; margin-inline: 6px; flex-shrink: 0; }
+  .side-brand-box { padding-inline: 5px; margin-left: 6px; }
+  .label-title-bold { flex-wrap: wrap; gap: 3px; }
+
+  .nokia-phone-body { max-width: 330px; padding: 1.1rem 1rem 1.4rem; border-radius: 36px 36px 44px 44px; }
+  .nokia-lcd-screen { min-height: 195px; padding: 6px 8px; border-radius: 6px; }
+  .nokia-keypad-matrix { gap: 8px; }
+  .num-key, .softkey-item, .nokia-mode-badge { min-height: 44px; }
+
+  .ticket-main-section { padding: 1.2rem 1rem 1rem; gap: 1rem; }
+  .ticket-headline-row { flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  .ticket-concert-title { font-size: clamp(1.7rem, 7vw, 2.2rem); }
+  .ticket-date-location { padding: .75rem .9rem; grid-template-columns: minmax(0, 1fr); gap: .6rem; }
+  .price-row { gap: 8px; padding: 10px; align-items: flex-start; }
+  .tier-name { font-size: .9rem; }
+  .price-value { padding-top: 3px; }
+  .price-value .amount { font-size: clamp(1.5rem, 5vw, 1.85rem); }
+  .price-value .currency, .price-value .unit { font-size: .95rem; }
+  .ticket-stub-section { padding: 1.1rem 1rem; align-items: center; gap: .8rem; }
+
+  .clothes-rack-section { gap: 1.6rem; padding-top: 2rem; }
+  .rack-section-kicker { font-size: .65rem; line-height: 1.7; letter-spacing: .08em; }
+  .rack-container { padding: 0; }
+  .rack-merch-drawer { border-radius: 14px; padding: 1.2rem 1rem; gap: 1.2rem; }
+  .drawer-title { font-size: 1.4rem; }
+  .drawer-desc { font-size: .88rem; line-height: 1.65; }
+  .drawer-palette-selector { flex-direction: column; align-items: flex-start; }
+  .palette-options { width: 100%; }
+  .color-chip-btn { flex: 1; padding-inline: 8px; justify-content: center; }
+  .btn-drawer-reserve { padding: 13px 16px; font-size: .95rem; border-radius: 8px; }
+  .btn-drawer-reserve .btn-text { font-size: .9rem; }
+  .btn-drawer-reserve svg { flex-shrink: 0; }
+
+  .tape-shell { padding: 14px 10px 18px; }
+  .tape-paper-label { padding: 12px 10px 10px; }
+  .payment-flex-deck, .approval-summary-card { grid-template-columns: minmax(0, 1fr); }
+  .tape-footer-action-row.account-action-row { grid-template-columns: minmax(0, 1fr); }
+  .account-action-row > button:last-child { grid-column: auto; }
+  .purchase-confirm-details > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .student-info-card { padding: 10px; }
+
+  .action-buttons > button { width: 100%; justify-content: center; min-height: 48px; }
+  .film-viewfinder-header { padding: 2.5rem 1rem 1.5rem; }
+  .viewfinder-hud-bar { flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 100%; }
+  .polaroid-collage-wrapper { padding-inline: 1.1rem; }
+  .polaroid-board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+  .polaroid-card { min-width: 0; }
+  .caption-marker-text { font-size: .78rem; overflow-wrap: anywhere; line-height: 1.5; }
+  .footer-directory-container { padding-inline: max(1rem, env(safe-area-inset-left)); }
+  .organizer-logos-card { max-width: 100%; flex-wrap: wrap; }
+  .footer-bottom-bar { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+  .page-container { padding-top: 1.2rem; gap: 1.8rem; }
+  .ticket-main-section { padding: 1rem .75rem .85rem; }
+  .tv-buttons-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .price-row { padding: 9px 8px; }
+  .tier-name { font-size: .85rem; }
+  .price-value .amount { font-size: 1.45rem; }
+}
+
+/* Touch screens must not retain hover transforms after tapping a control. */
+@media (hover: none) {
+  .tape-item:hover, .tape-item:focus-visible { transform: translateX(4px) !important; }
+  .hanger-assembly:hover { animation: none !important; }
+  .polaroid-card:hover { transform: rotate(0deg) !important; }
+  .nokia-phone-body:hover, .ticket-card:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .hanger-assembly:hover { animation: none !important; }
+  .scroll-reveal { opacity: 1; transform: none; }
+}

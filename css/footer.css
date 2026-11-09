@@ -1,0 +1,211 @@
+/* ==========================================================================
+   TRIAMDOD 10 — EDITORIAL FOOTER & TICKET DROP CTA
+   Theme: Y2K Editorial, Minimalist Luxury, Tactile High-End Buttons
+   ========================================================================== */
+
+.editorial-footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 3rem 1rem 2rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 680px;
+}
+
+.ticket-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #e2e8f0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #38ef7d;
+  box-shadow: 0 0 10px #38ef7d;
+  animation: pulseLight 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseLight {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 8px #38ef7d;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.6;
+    box-shadow: 0 0 16px #38ef7d;
+  }
+}
+
+.footer-caption {
+  font-family: var(--font-thai);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.6;
+  font-weight: 400;
+  margin: 0;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Primary CTA Button: White with bold typography & glowing hover */
+.btn-notify-open {
+  background: #f8fafc;
+  color: #0b0c10;
+  border: none;
+  border-radius: 999px;
+  padding: 15px 32px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.22),
+              0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.btn-notify-open:hover {
+  transform: translateY(-2.5px) scale(1.02);
+  background: #ffffff;
+  box-shadow: 0 10px 32px rgba(255, 255, 255, 0.35),
+              0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+.btn-notify-open:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-arrow-right {
+  font-family: var(--font-y2k);
+  font-size: 1.15rem;
+  font-weight: 800;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.btn-notify-open:hover .btn-arrow-right {
+  transform: translateX(4px);
+}
+
+/* Secondary CTA Button: Sleek frosted glass button */
+.btn-ticket-info {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e2e8f0;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 15px 28px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.22s ease;
+  user-select: none;
+}
+
+.btn-ticket-info:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.btn-ticket-info:active {
+  transform: translateY(0);
+}
+
+/* Footer Metadata */
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1140px;
+  padding-top: 1.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-y2k);
+  font-size: 0.72rem;
+  color: var(--text-subtle);
+  letter-spacing: 0.06em;
+}
+
+.meta-tag {
+  font-family: var(--font-thai);
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.meta-tag.copyright {
+  font-family: var(--font-y2k);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-notify-open,
+  .btn-ticket-info {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+
+  .footer-meta {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.6rem;
+  }
+}

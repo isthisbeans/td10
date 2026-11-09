@@ -1,0 +1,625 @@
+/* --------------------------------------------------------------------------
+   NOKIA 3310 HYPER-REALISTIC PHONE & TIMETABLE SECTION
+   Standalone centered interactive phone showcase
+   -------------------------------------------------------------------------- */
+.duo-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 780px;
+}
+
+.nokia-schedule-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.section-kicker {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--accent-neon-green);
+  letter-spacing: 0.12em;
+}
+
+.section-heading {
+  font-family: var(--font-thai);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #f3f3f0;
+}
+
+.section-subtext {
+  font-family: var(--font-thai);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.nokia-phone-body {
+  width: 100%;
+  max-width: 360px;
+  background: linear-gradient(
+    175deg,
+    var(--nokia-shell-top) 0%,
+    var(--nokia-shell-mid) 50%,
+    var(--nokia-shell-bottom) 100%
+  );
+  border: 3.5px solid #3d4661;
+  border-radius: 42px 42px 50px 50px;
+  padding: 1.3rem 1.4rem 1.6rem;
+  box-shadow: 0 32px 75px rgba(0, 0, 0, 0.95),
+              inset 0 2px 4px rgba(255, 255, 255, 0.35),
+              inset 0 -6px 12px rgba(0, 0, 0, 0.85),
+              0 0 0 1px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.nokia-phone-body:hover {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: 0 38px 85px rgba(0, 0, 0, 0.98),
+              0 0 25px rgba(59, 130, 246, 0.2);
+}
+
+.phone-rim-highlight {
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.nokia-earpiece {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+}
+
+.earpiece-slot {
+  width: 36px;
+  height: 4.5px;
+  background: #090b10;
+  border-radius: 3px;
+  box-shadow: inset 0 1.5px 2px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.18);
+  border-bottom: 1px solid #4a5472;
+}
+
+.nokia-brand-logo {
+  font-family: var(--font-y2k);
+  font-size: 0.86rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: #e5e7eb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(255, 255, 255, 0.3);
+  margin-bottom: 0.85rem;
+}
+
+.nokia-screen-frame {
+  position: relative;
+  width: 100%;
+  background: #0e1118;
+  border-radius: 14px;
+  padding: 8px;
+  border: 2.5px solid var(--nokia-faceplate-rim);
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.screen-glass-glare {
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 140%;
+  height: 120%;
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.05) 30%,
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+.nokia-lcd-screen {
+  background-color: var(--nokia-lcd-bg);
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.035) 0px,
+    rgba(0, 0, 0, 0.035) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  border-radius: 7px;
+  padding: 8px 10px;
+  color: var(--nokia-lcd-text);
+  font-family: var(--font-osd);
+  font-size: 1.05rem;
+  line-height: 1.25;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.nokia-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid var(--nokia-lcd-text);
+  padding-bottom: 3px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.status-signal, .status-battery {
+  letter-spacing: -0.1em;
+}
+
+.status-operator {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.nokia-screen-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  margin: 4px 0 5px;
+  font-size: 1rem;
+}
+
+.nokia-title-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nokia-mode-badge {
+  background: transparent;
+  border: 1px solid var(--nokia-lcd-text);
+  color: var(--nokia-lcd-text);
+  font-family: var(--font-osd);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.nokia-mode-badge:hover,
+.nokia-mode-badge.mode-active {
+  background: var(--nokia-lcd-text);
+  color: var(--nokia-lcd-bg);
+}
+
+.snake-icon-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: currentColor;
+}
+
+/* Retro Nokia Snake Viewport */
+.nokia-snake-viewport {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  padding: 2px 0;
+  min-height: 135px;
+}
+
+.snake-scoreboard {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-bottom: 1px dashed var(--nokia-lcd-text);
+  padding-bottom: 2px;
+  line-height: 1;
+}
+
+.snake-canvas-box {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nokia-snake-canvas {
+  image-rendering: pixelated;
+  width: 100%;
+  max-width: 196px;
+  height: auto;
+  aspect-ratio: 180 / 108;
+  background: var(--nokia-lcd-bg);
+  border: 1px solid var(--nokia-lcd-text);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.snake-overlay-msg {
+  position: absolute;
+  inset: 0;
+  background: rgba(152, 171, 130, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 10;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+}
+
+.snake-msg-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--nokia-lcd-text);
+}
+
+.snake-msg-sub {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--nokia-lcd-text);
+}
+
+.snake-msg-hint {
+  font-size: 0.78rem;
+  opacity: 0.85;
+  color: var(--nokia-lcd-text);
+  margin-top: 1px;
+}
+
+.nokia-timetable-list {
+  flex: 1;
+  max-height: 135px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--nokia-lcd-text) transparent;
+}
+
+.nokia-timetable-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nokia-timetable-list::-webkit-scrollbar-thumb {
+  background-color: var(--nokia-lcd-text);
+  border-radius: 2px;
+}
+
+.schedule-slot {
+  padding: 3px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.schedule-slot:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.schedule-slot.active-slot {
+  background-color: var(--nokia-lcd-text);
+  color: var(--nokia-lcd-bg);
+}
+
+.slot-time {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.slot-act {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.slot-genre {
+  font-size: 0.88rem;
+  opacity: 0.85;
+}
+
+.scroll-indicator {
+  font-family: var(--font-osd);
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: var(--nokia-lcd-text);
+  color: var(--nokia-lcd-bg);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.schedule-slot.special-guest-slot {
+  border-left: 3.5px solid var(--nokia-lcd-text);
+  background: rgba(0, 0, 0, 0.08);
+  padding: 5px 6px;
+}
+
+.special-guest-title {
+  color: #1a2512;
+  font-weight: 800;
+  font-size: 0.98rem;
+  letter-spacing: 0.05em;
+}
+
+.special-headliner-name {
+  font-family: var(--font-y2k);
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin: 1px 0;
+  color: #111a0c;
+}
+
+.schedule-slot.special-guest-slot.active-slot {
+  background: var(--nokia-lcd-text);
+  color: var(--nokia-lcd-bg);
+  border-left-color: var(--nokia-lcd-bg);
+}
+
+.schedule-slot.special-guest-slot.active-slot .slot-time,
+.schedule-slot.special-guest-slot.active-slot .special-guest-title,
+.schedule-slot.special-guest-slot.active-slot .special-headliner-name,
+.schedule-slot.special-guest-slot.active-slot .slot-genre {
+  color: inherit;
+}
+
+.schedule-slot.special-guest-slot.active-slot .slot-genre {
+  opacity: 1;
+}
+
+.schedule-slot.finale-slot {
+  border: 1.5px dashed var(--nokia-lcd-text);
+  padding: 4px 6px;
+}
+
+.nokia-softkeys-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1.5px solid var(--nokia-lcd-text);
+  margin-top: 6px;
+  padding-top: 3px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.softkey-item {
+  background: transparent;
+  border: none;
+  color: var(--nokia-lcd-text);
+  font-family: var(--font-osd);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.softkey-item:hover {
+  text-decoration: underline;
+}
+
+.softkey-center {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--nokia-lcd-text);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   Hyper-Realistic 3310 Keypad Controls Island (D-Pad, NAVI, C-Button)
+   -------------------------------------------------------------------------- */
+.nokia-controls-island {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 14px;
+  padding: 0 6px;
+  position: relative;
+}
+
+.nav-btn {
+  background: linear-gradient(180deg, #3d455d 0%, #262c3e 100%);
+  border: 1px solid #556082;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-y2k);
+  font-weight: 800;
+  transition: all 0.08s ease;
+  user-select: none;
+}
+
+.nav-btn:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.nokia-btn-c {
+  width: 52px;
+  height: 34px;
+  font-size: 0.98rem;
+  color: #f1f5f9;
+}
+
+.nokia-btn-c:hover {
+  background: linear-gradient(180deg, #47526f 0%, #2e354a 100%);
+}
+
+.nokia-dpad {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dpad-btn {
+  background: linear-gradient(180deg, #373e54 0%, #222737 100%);
+  border: 1px solid #4e5879;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: var(--font-y2k);
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: all 0.08s ease;
+}
+
+.dpad-btn:active {
+  transform: translateY(2px) scale(0.96);
+}
+
+.dpad-up,
+.dpad-down {
+  width: 36px;
+  height: 34px;
+  font-size: 0.85rem;
+}
+
+.dpad-navi {
+  width: 95px;
+  height: 34px;
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 60%, #173b9e 100%);
+  border: 1.5px solid #60a5fa;
+  border-radius: 17px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dpad-navi:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 60%, #1d4ed8 100%);
+}
+
+.navi-bar {
+  font-family: var(--font-y2k);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0;
+  transform: translateY(-1px);
+}
+
+.island-trim-groove {
+  position: absolute;
+  bottom: -6px;
+  left: 10px;
+  right: 10px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Tactile 3D Molded Numeric Keypad (4x3 Matrix)
+   -------------------------------------------------------------------------- */
+.nokia-keypad-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px 12px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 0 4px;
+}
+
+.num-key {
+  background: linear-gradient(180deg, #373e54 0%, #222737 100%);
+  border: 1px solid #4e5879;
+  border-radius: 10px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  user-select: none;
+  transition: all 0.08s ease;
+}
+
+.num-key:hover {
+  background: linear-gradient(180deg, #444c66 0%, #2b3145 100%);
+  border-color: #6c789e;
+}
+
+.num-key:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.key-digit {
+  font-family: var(--font-y2k);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.key-sub {
+  font-family: monospace;
+  font-size: 0.52rem;
+  color: #9aa1b5;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.key-special-zero .key-digit {
+  color: var(--accent-neon-green);
+}
+
+.key-special-zero .key-sub {
+  color: var(--accent-neon-green);
+}
+
+.mic-pinhole {
+  width: 5px;
+  height: 5px;
+  background: #080a0f;
+  border-radius: 50%;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+}

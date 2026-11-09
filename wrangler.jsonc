@@ -1,0 +1,47 @@
+{
+	"name": "triamdod-10",
+	"compatibility_date": "2026-10-18",
+	"workers_dev": true,
+	"main": "worker/index.mjs",
+	"vars": {
+		"GOOGLE_CLIENT_ID": "367195319418-jrbbsim94l6p5l6qqjaeln8cgr9f51m5.apps.googleusercontent.com",
+		"APP_ORIGIN": "https://triamdod.com",
+		"OWNER_GOOGLE_EMAIL": "sulinx.b@gmail.com"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "triamdod-orders",
+			"migrations_dir": "migrations",
+			"database_id": "c8662b15-8291-4a45-80f0-a8e8781f208d"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "SLIPS",
+			"bucket_name": "triamdod-slips"
+		}
+	],
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"run_worker_first": [
+			"/api/*"
+		],
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "none"
+	},
+	"build": {
+		"command": "node scripts/build-cloudflare.mjs",
+		"watch_dir": [
+			"index.html",
+			"admin.html",
+			"app.js",
+			"favicon.ico",
+			"_headers",
+			"css",
+			"js",
+			"assets"
+		]
+	}
+}

@@ -1,0 +1,1060 @@
+/* ==========================================================================
+   TRIAMDOD 10 — CLOTHES RACK MERCH SHOWCASE (ราวแขวนเสื้อเสมือนจริง)
+   Features:
+   - Industrial Matte Gunmetal Standing Rack with rounded rails & side hooks
+   - Real Wooden Hangers with hanging dark brown & sand beige concert tees
+   - Realistic Fabric Shading, Screen-print Graphics & Hangtags
+   - Hanging Memorial Acrylic Keychains & VIP Lanyard on side hooks
+   - Interactive sway physics & tactile audio inspection drawer
+   ========================================================================== */
+
+.clothes-rack-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  padding: 3.5rem 0 2rem;
+  position: relative;
+}
+
+.rack-section-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 820px;
+}
+
+.rack-section-kicker {
+  font-family: var(--font-y2k);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ff007f;
+  letter-spacing: 0.16em;
+  background: rgba(255, 0, 127, 0.12);
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  padding: 3px 12px;
+  border-radius: 999px;
+}
+
+.rack-section-heading {
+  font-family: var(--font-thai);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: #f8fafc;
+  line-height: 1.3;
+}
+
+.rack-section-subtext {
+  font-family: var(--font-thai);
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   THE CLOTHES RACK STRUCTURE (โครงสร้างราวแขวนผ้า)
+   -------------------------------------------------------------------------- */
+.rack-container {
+  width: 100%;
+  max-width: 1000px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1rem 0;
+  user-select: none;
+}
+
+.rack-mobile-palette, .rack-swipe-hint {
+  display: none;
+}
+
+.rack-frame-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  min-height: 660px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Metal Rack Tubes */
+.rack-top-rail {
+  position: absolute;
+  top: 15px;
+  left: 60px;
+  right: 60px;
+  height: 14px;
+  background: linear-gradient(180deg, #6b7280 0%, #374151 45%, #1f2937 80%, #111827 100%);
+  border-radius: 7px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7), inset 0 2px 2px rgba(255, 255, 255, 0.35);
+  z-index: 2;
+}
+
+/* Upper Arched Metal Tube Corners */
+.rack-arch-left,
+.rack-arch-right {
+  position: absolute;
+  top: 15px;
+  width: 50px;
+  height: 50px;
+  border: 14px solid #374151;
+  border-bottom: none;
+  z-index: 2;
+}
+
+.rack-arch-left {
+  left: 20px;
+  border-right: none;
+  border-top-left-radius: 40px;
+  border-color: #374151;
+}
+
+.rack-arch-right {
+  right: 20px;
+  border-left: none;
+  border-top-right-radius: 40px;
+}
+
+/* Ball Finials on Rail Ends */
+.rack-ball-finial {
+  position: absolute;
+  top: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9ca3af, #374151 70%, #111827);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  z-index: 3;
+}
+
+.rack-ball-finial.left { left: 45px; }
+.rack-ball-finial.right { right: 45px; }
+
+/* Upright Vertical Poles */
+.rack-upright {
+  position: absolute;
+  top: 40px;
+  bottom: 30px;
+  width: 16px;
+  background: linear-gradient(90deg, #6b7280 0%, #374151 50%, #111827 100%);
+  border-radius: 8px;
+  box-shadow: inset 1px 0 2px rgba(255, 255, 255, 0.25), 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.rack-upright.left { left: 20px; }
+.rack-upright.right { right: 20px; }
+
+/* Lower Crossbar & Bottom Shelf */
+.rack-lower-crossbar {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  right: 20px;
+  height: 10px;
+  background: linear-gradient(180deg, #4b5563, #1f2937);
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.rack-bottom-shelf {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  right: 20px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 10px;
+  z-index: 2;
+}
+
+.shelf-slat {
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(180deg, #4b5563, #111827);
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Floor Feet */
+.rack-feet-left,
+.rack-feet-right {
+  position: absolute;
+  bottom: 0;
+  width: 65px;
+  height: 28px;
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(180deg, #374151, #111827);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.95);
+  z-index: 3;
+}
+
+.rack-feet-left { left: -5px; }
+.rack-feet-right { right: -5px; }
+
+/* Ambient Floor Shadow */
+.rack-floor-shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 30px;
+  right: 30px;
+  height: 24px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0) 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bottom Shelf Souvenir Props */
+.shelf-merch-box {
+  position: absolute;
+  bottom: 30px;
+  left: 80px;
+  width: 150px;
+  height: 60px;
+  background: #252830;
+  border: 1px solid #3f4452;
+  border-radius: 4px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 12px;
+  z-index: 3;
+}
+
+.box-handle {
+  width: 44px;
+  height: 6px;
+  background: #b45309;
+  border-radius: 3px;
+  align-self: center;
+  margin-bottom: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.box-label {
+  font-family: var(--font-y2k);
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.box-sublabel {
+  font-family: var(--font-thai);
+  font-size: 0.58rem;
+  color: #d4ff00;
+  text-align: center;
+  font-weight: 500;
+}
+
+.shelf-folded-towel {
+  position: absolute;
+  bottom: 30px;
+  right: 120px;
+  width: 120px;
+  height: 38px;
+  background: #1e2026;
+  border-radius: 4px;
+  border: 1px solid #333842;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.towel-tag {
+  font-family: var(--font-y2k);
+  font-size: 0.55rem;
+  color: #ff007f;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   HANGING MERCHANDISE ITEMS (เสื้อ & ของที่ระลึกที่แขวนอยู่บนราว)
+   -------------------------------------------------------------------------- */
+.rack-hangers-row {
+  position: absolute;
+  top: 14px;
+  left: 60px;
+  right: 60px;
+  height: 600px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Individual Hanger + Clothes Unit */
+.hanger-assembly {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  cursor: grab;
+  transform-origin: 50% 2px;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), filter 0.3s ease;
+}
+
+.hanger-assembly:active {
+  cursor: grabbing;
+}
+
+.hanger-assembly:focus-visible {
+  outline: 2px solid #ff007f;
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+/* Subtle, smooth natural fabric sway */
+.hanger-assembly:hover {
+  animation: hangerSway 2.4s ease-in-out infinite alternate !important;
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.95)) brightness(1.04);
+}
+
+.hanger-assembly.swaying-active {
+  animation: hangerKick 1.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.hanger-assembly.selected {
+  filter: drop-shadow(0 0 16px rgba(255, 0, 127, 0.35)) drop-shadow(0 18px 36px rgba(0, 0, 0, 0.95));
+}
+
+@keyframes hangerSway {
+  0% { transform: rotate(-2.2deg); }
+  100% { transform: rotate(2.2deg); }
+}
+
+@keyframes hangerKick {
+  0% { transform: rotate(0deg); }
+  22% { transform: rotate(-5deg); }
+  45% { transform: rotate(3.6deg); }
+  68% { transform: rotate(-1.8deg); }
+  85% { transform: rotate(0.8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* The Wooden Hanger on top of the shirt */
+.hanger-hardware {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 190px;
+  z-index: 6;
+}
+
+.metal-hanger-hook {
+  width: 18px;
+  height: 26px;
+  border: 3px solid #d1d5db;
+  border-bottom: none;
+  border-radius: 9px 9px 0 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  position: relative;
+  top: 1px;
+}
+
+.wood-hanger-body {
+  width: 190px;
+  height: 16px;
+  background: linear-gradient(180deg, #78350f 0%, #451a03 70%, #291002 100%);
+  border-radius: 24px 24px 6px 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  margin-top: -2px;
+  position: relative;
+}
+
+.wood-hanger-body::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   THE CONCERT T-SHIRTS (เสื้อยืดสีน้ำตาลเข้ม & เสื้อสีเนื้อ)
+   -------------------------------------------------------------------------- */
+.tshirt-wrapper {
+  position: relative;
+  width: 290px;
+  height: 380px;
+  margin-top: -6px;
+  transition: transform 0.25s ease;
+}
+
+.tshirt-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.85));
+}
+
+/* Hangtag Attached to Shirt Collar */
+.shirt-hangtag {
+  position: absolute;
+  top: 32px;
+  right: 24px;
+  width: 38px;
+  height: 60px;
+  background: #18191f;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 2px;
+  transform: rotate(6deg);
+  transform-origin: top left;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.shirt-hangtag::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  width: 1px;
+  height: 10px;
+  background: #ffffff;
+  opacity: 0.6;
+}
+
+.tag-brand {
+  font-family: var(--font-y2k);
+  font-size: 0.42rem;
+  font-weight: 800;
+  color: #ff007f;
+  letter-spacing: 0.05em;
+}
+
+.tag-status {
+  font-family: var(--font-y2k);
+  font-size: 0.58rem;
+  font-weight: 900;
+  color: #d4ff00;
+  background: rgba(212, 255, 0, 0.15);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.tag-barcode {
+  font-family: monospace;
+  font-size: 0.42rem;
+  letter-spacing: -0.05em;
+  color: #94a3b8;
+}
+
+/* Woven Collar Label */
+.collar-woven-label {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #121316;
+  border: 1px solid #333;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-family: var(--font-y2k);
+  font-size: 0.45rem;
+  font-weight: 700;
+  color: #f3f3f0;
+  letter-spacing: 0.04em;
+  z-index: 8;
+  white-space: nowrap;
+}
+
+/* Shirt Quick-Hover Badge */
+.shirt-hover-pill {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(12, 13, 16, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-family: var(--font-thai);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.hanger-assembly:hover .shirt-hover-pill {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.shirt-screenprint {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   INTERACTIVE MERCH INSPECTION DRAWER (แผงดีเทลเสื้อ ดีไซน์โมเดิร์น ธีมสว่าง คลีน อ่านง่าย สไตล์ Editorial Y2K)
+   - Light Theme matching the warm vintage paper & ticket pass above
+   - High-contrast, crystal-clear typography and spacious 4-tile spec matrix
+   -------------------------------------------------------------------------- */
+.rack-merch-drawer {
+  width: 100%;
+  max-width: 1000px;
+  background: #fbf9f4;
+  color: #171514;
+  border: 1.5px solid #dcd5c7;
+  border-radius: 20px;
+  padding: 2.4rem 2.8rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 2px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  margin-top: 1.8rem;
+  transition: all 0.3s ease;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.015) 0px,
+    rgba(0, 0, 0, 0.015) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+.drawer-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  border-bottom: 1.5px dashed #d5cdbe;
+  padding-bottom: 1.2rem;
+}
+
+.drawer-tag-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.merch-tag {
+  font-family: var(--font-y2k);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.merch-tag .tag-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.merch-tag-primary {
+  background: #17181d;
+  color: #ffffff;
+  border: 1px solid #17181d;
+}
+
+.merch-tag-badge {
+  background: #ede6d8;
+  color: #342823;
+  border: 1px solid #cec3b0;
+}
+
+.merch-tag-tba {
+  background: #fffcee;
+  color: #b45309;
+  border: 1.5px solid #f59e0b;
+}
+
+.drawer-palette-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.palette-label {
+  font-family: var(--font-thai);
+  font-size: 0.88rem;
+  color: #5f554e;
+  font-weight: 600;
+}
+
+.palette-options {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-chip-btn {
+  background: #ffffff;
+  border: 1.5px solid #cfc6b7;
+  border-radius: 999px;
+  padding: 6px 14px 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #28211d;
+  font-family: var(--font-thai);
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.color-chip-btn:hover {
+  border-color: #ff007f;
+  background: #fff0f6;
+  color: #ff007f;
+  transform: translateY(-1px);
+}
+
+.color-chip-btn.active {
+  background: #201a17;
+  color: #ffffff;
+  border-color: #201a17;
+  box-shadow: 0 4px 12px rgba(32, 26, 23, 0.25);
+}
+
+.chip-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.brown-dot {
+  background: #342823;
+  border: 1px solid #5a453c;
+}
+
+.beige-dot {
+  background: #ded3c1;
+  border: 1px solid #a69a85;
+}
+
+/* Title Block */
+.drawer-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.title-with-edition {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.drawer-title {
+  font-family: var(--font-thai);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #171514;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.title-edition-badge {
+  font-family: var(--font-y2k);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #3d322b;
+  letter-spacing: 0.08em;
+  background: #ede6d8;
+  border: 1px solid #cec3b0;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.drawer-desc {
+  font-family: var(--font-thai);
+  font-size: 1rem;
+  color: #4e443e;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 900px;
+}
+
+/* Clean Minimalist Shirt Features (No backgrounds, modern icons) */
+.shirt-features-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  padding: 0.8rem 0;
+  border-top: 1px dashed rgba(213, 205, 190, 0.7);
+  margin-top: 0.2rem;
+}
+
+.feature-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #2b2420;
+  font-family: var(--font-thai);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.feature-item:hover {
+  color: #ff007f;
+  transform: translateY(-1px);
+}
+
+.feature-svg {
+  width: 19px;
+  height: 19px;
+  color: #ff007f;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover .feature-svg {
+  transform: scale(1.12);
+}
+
+.feature-dot {
+  color: #c4b8a5;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.drawer-action-row-clean {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0.4rem;
+}
+
+.btn-phone-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Action Row (Legacy fallback) */
+.drawer-action-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding-top: 1.4rem;
+  border-top: 1.5px dashed #d5cdbe;
+  flex-wrap: wrap;
+}
+
+.btn-drawer-reserve {
+  background: linear-gradient(135deg, #ff007f 0%, #d6006c 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 30px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 6px 22px rgba(255, 0, 127, 0.35);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-drawer-reserve .btn-text {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.btn-drawer-reserve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 0, 127, 0.55);
+  filter: brightness(1.06);
+}
+
+.btn-arrow-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.btn-drawer-reserve:hover .btn-arrow-icon {
+  transform: translateX(3px);
+}
+
+/* Responsive Rules */
+@media (max-width: 1080px) {
+  .rack-frame-wrap {
+    min-height: 0;
+    min-width: 0;
+    padding: 14px 30px 100px;
+  }
+  .rack-hangers-row {
+    position: relative;
+    inset: auto;
+    height: auto;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 8px 12px 44px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 12px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #b98ba0 #27232a;
+    pointer-events: auto;
+  }
+  .rack-hangers-row .hanger-assembly {
+    flex: 0 0 clamp(180px, 32%, 240px);
+    width: 240px;
+    max-width: 240px;
+    min-width: 0;
+    scroll-snap-align: center;
+    animation: none !important;
+  }
+  .rack-hangers-row .shirt-hover-pill {
+    bottom: -28px;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    opacity: 1;
+    transform: translateX(-50%);
+    font-size: 0.72rem;
+    padding: 5px 10px;
+  }
+  .rack-swipe-hint {
+    display: block;
+    color: #cfc7ba;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .rack-hangers-row .tshirt-wrapper {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .rack-hangers-row .tshirt-svg {
+    display: block;
+    overflow: visible;
+  }
+  .rack-hangers-row .hanger-hardware {
+    width: 66%;
+  }
+  .rack-hangers-row .wood-hanger-body {
+    width: 100%;
+  }
+  .shelf-merch-box {
+    left: 40px;
+    width: 120px;
+  }
+  .shelf-folded-towel {
+    right: 50px;
+  }
+  
+}
+
+@media (max-width: 680px) {
+  .rack-container {
+    padding: 0;
+  }
+  .rack-mobile-palette {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .rack-mobile-palette > span {
+    width: 100%;
+    color: #cfc7ba;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+  .rack-mobile-palette .palette-options {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+  .rack-mobile-palette .color-chip-btn {
+    flex: 0 1 148px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 8px 12px;
+    border-color: #4b4543;
+    background: #1c1919;
+    color: #e9e1d6;
+  }
+  .rack-mobile-palette .color-chip-btn.active {
+    background: #fbf9f4;
+    color: #28211d;
+    border-color: #fbf9f4;
+    box-shadow: 0 0 0 2px rgba(255, 0, 127, 0.3);
+  }
+  .rack-frame-wrap {
+    min-height: 0;
+    padding: 14px 24px 90px;
+    max-width: 420px;
+  }
+  .rack-hangers-row .hanger-assembly {
+    /* Keep every view in the native swipe track, at a readable phone size. */
+    flex-basis: 86%;
+    max-width: 260px;
+  }
+  .shirt-hangtag {
+    width: 32px;
+    height: 50px;
+    top: 9%;
+    right: 8%;
+  }
+  .collar-woven-label {
+    top: 4%;
+    font-size: 0.42rem;
+    padding: 1px 4px;
+  }
+  .rack-top-rail {
+    left: 44px;
+    right: 44px;
+  }
+  .rack-arch-left, .rack-upright.left {
+    left: 8px;
+  }
+  .rack-arch-right, .rack-upright.right {
+    right: 8px;
+  }
+  .rack-ball-finial.left {
+    left: 34px;
+  }
+  .rack-ball-finial.right {
+    right: 34px;
+  }
+  .rack-lower-crossbar, .rack-bottom-shelf {
+    left: 8px;
+    right: 8px;
+  }
+  .rack-feet-left, .rack-feet-right {
+    width: 48px;
+  }
+  .rack-feet-left {
+    left: -4px;
+  }
+  .rack-feet-right {
+    right: -4px;
+  }
+  .shelf-merch-box {
+    display: none;
+  }
+  .shelf-folded-towel {
+    display: none;
+  }
+  .rack-merch-drawer {
+    padding: 1.4rem 1.1rem;
+    border-radius: 16px;
+    margin-top: 1rem;
+  }
+  .drawer-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .drawer-tag-cluster {
+    gap: 6px;
+  }
+  .merch-tag {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+  .drawer-palette-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .drawer-title {
+    font-size: 1.45rem;
+  }
+  .drawer-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+  .shirt-features-minimal {
+    gap: 0.6rem 0.8rem;
+    justify-content: flex-start;
+  }
+  .feature-dot {
+    display: none;
+  }
+  .feature-item {
+    font-size: 0.82rem;
+  }
+  .drawer-action-row-clean {
+    width: 100%;
+  }
+  .btn-drawer-reserve {
+    justify-content: center;
+    width: 100%;
+    font-size: 0.92rem;
+    padding: 12px 18px;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  .rack-section-heading {
+    font-size: 1.4rem;
+  }
+  .drawer-title {
+    font-size: 1.3rem;
+  }
+  .drawer-desc {
+    font-size: 0.84rem;
+  }
+  .rack-merch-drawer {
+    padding: 1.1rem 0.9rem;
+    border-radius: 14px;
+  }
+}

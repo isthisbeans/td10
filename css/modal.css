@@ -1,0 +1,1330 @@
+/* ==========================================================================
+   TRIAMDOD 10 — RETRO COIN-OPERATED PAYPHONE BOOTH MODAL
+   Theme: Free-Floating Authentic Thai Street Public Payphone & Wall Phonecards
+   - NO rigid bounding box container (freedom of placement, borderless immersion)
+   - Centered Thai street payphone casing in dusty terracotta pink (#c47769 to #9b4e42)
+   - Black telephone handset on cradle with armored coiled metallic spiral cord (clickable!)
+   - Inset green phosphor LCD screen, round chrome-rim 3x4 keypad buttons (all keys interactive!)
+   - Clickable coin slot & clickable coin return pocket flap (PUSH)
+   - Scattered Vintage Thai Phonecards (บัตรโทรศัพท์) on the left & right walls
+   - Free-floating bottom controls dock: shirt color/size pickers & Connect Call CTA
+   - Fits 100% within viewport height — ZERO vertical or horizontal scrolling required!
+   - ZERO EMOJIS — 100% clean typographic hierarchy and SVG graphics
+   ========================================================================== */
+
+.payphone-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(18, 20, 28, 0.94) 0%, rgba(10, 11, 16, 0.97) 65%, rgba(4, 5, 8, 0.99) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 2300;
+  display: none !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden; /* No scrolling! */
+  transition: opacity 0.3s ease;
+}
+
+.payphone-modal-backdrop.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+/* --------------------------------------------------------------------------
+   Top Floating Header Bar (Free-floating pills, no box frame)
+   -------------------------------------------------------------------------- */
+.payphone-floating-header {
+  width: 100%;
+  max-width: 880px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 8px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.payphone-floating-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: rgba(24, 27, 36, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.payphone-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulseInService 1.6s infinite ease-in-out;
+}
+
+@keyframes pulseInService {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.payphone-brand-title {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f1f5f9;
+}
+
+.payphone-floating-hangup {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hangup-text {
+  font-family: 'IBM Plex Sans Thai', 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.payphone-floating-hangup:hover {
+  background: rgba(239, 68, 68, 0.4);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Account placard: package eligibility follows the signed-in account. */
+.payphone-role-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  z-index: 10;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.payphone-account-badge {
+  background: #f59e0b;
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
+}
+
+.payphone-selection-hint {
+  margin: 0;
+  font-family: var(--font-thai);
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  text-align: center;
+}
+
+.vintage-phonecard.filtered-out,
+.vintage-phonecard[hidden] {
+  display: none !important;
+}
+
+.vintage-phonecard:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Main Free-Standing Stage (Centered Payphone & Free-Floating Wall Cards)
+   -------------------------------------------------------------------------- */
+.payphone-free-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 880px;
+  position: relative;
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+/* Left & Right Flank Wings */
+.booth-wall-flank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 190px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Vintage Thai Phonecards (บัตรโทรศัพท์สาธารณะ AIS / TOT Style)
+   -------------------------------------------------------------------------- */
+.vintage-phonecard {
+  width: 180px;
+  height: 205px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6),
+              0 2px 6px rgba(0, 0, 0, 0.3),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+/* Translucent Frosted Scotch Tape on Top */
+.card-scotch-tape {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.45);
+  border-left: 1px dashed rgba(255, 255, 255, 0.7);
+  border-right: 1px dashed rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  pointer-events: none;
+  backdrop-filter: blur(1px);
+}
+
+/* Natural Card Tilt Angles on Wall */
+.wall-left .vintage-phonecard {
+  transform: rotate(-3.5deg);
+}
+
+.wall-right .vintage-phonecard:nth-child(1) {
+  transform: rotate(2.5deg);
+}
+
+.wall-right .vintage-phonecard:nth-child(2) {
+  transform: rotate(-2.5deg);
+}
+
+.vintage-phonecard:hover {
+  transform: translateY(-4px) scale(1.03) rotate(0deg) !important;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7), 0 0 16px rgba(245, 158, 11, 0.4);
+}
+
+.vintage-phonecard.active-pkg {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+  transform: translateY(-5px) scale(1.04) rotate(0deg) !important;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.85), 0 0 24px rgba(245, 158, 11, 0.7);
+}
+
+/* Inner Phonecard Layout */
+.phonecard-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Top Row: Smart Card Chip + Telecom Brand */
+.phonecard-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 9px 3px;
+  z-index: 2;
+}
+
+.card-chip-graphic {
+  width: 24px;
+  height: 18px;
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 50%, #a16207 100%);
+  border-radius: 3px;
+  border: 1px solid #fef08a;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card-chip-graphic.chip-gold {
+  background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #854d0e 100%);
+}
+
+.chip-notch {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 10px;
+  width: 3px;
+  background: #713f12;
+  border-radius: 1px;
+}
+
+.chip-pin {
+  position: absolute;
+  height: 2px;
+  background: #713f12;
+  border-radius: 1px;
+}
+
+.chip-pin.pin-1 { top: 4px; left: 3px; width: 5px; }
+.chip-pin.pin-2 { bottom: 4px; left: 3px; width: 5px; }
+
+.card-telecom-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+
+.telecom-name {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.05em;
+}
+
+.card-dial-key {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  font-size: 0.54rem;
+  font-weight: 800;
+  color: #d97706;
+  background: rgba(217, 119, 6, 0.12);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* Center Art Area */
+.phonecard-art-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  text-align: center;
+  z-index: 2;
+}
+
+.card-art-motif {
+  width: 52px;
+  height: 44px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 3px 5px rgba(0, 0, 0, 0.15);
+}
+
+.motif-ticket {
+  background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+  border: 1px solid #3b82f6;
+}
+
+.motif-souvenir {
+  background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+  border: 1px solid #d97706;
+}
+
+.motif-bundle {
+  background: linear-gradient(135deg, #3d2314 0%, #1c0e07 100%);
+  border: 1px solid #78350f;
+}
+
+.motif-alumni-tee {
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+  border: 1px solid #64748b;
+}
+
+.motif-alumni-bundle {
+  background: linear-gradient(135deg, #27272a 0%, #09090b 100%);
+  border: 1px solid #eab308;
+}
+
+.motif-badge-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.42rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fef08a;
+  opacity: 0.9;
+}
+
+.motif-title-art {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+}
+
+.card-pkg-name {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.card-pkg-sub {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.58rem;
+  color: #64748b;
+  margin-top: 1px;
+  line-height: 1.2;
+}
+
+/* Curved Organic Bottom Wave Swoosh with Price */
+.phonecard-bottom-swoosh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 9px 6px 10px;
+  border-radius: 12px 12px 0 0;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+}
+
+.swoosh-ticket {
+  background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  border-top: 2px solid #3b82f6;
+}
+
+.swoosh-souvenir {
+  background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+  border-top: 2px solid #f59e0b;
+}
+
+.swoosh-bundle {
+  background: linear-gradient(135deg, #451a03 0%, #290f02 100%);
+  border-top: 2px solid #b45309;
+}
+
+.swoosh-alumni-tee {
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  border-top: 2px solid #94a3b8;
+}
+
+.swoosh-alumni-bundle {
+  background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
+  border-top: 2px solid #eab308;
+}
+
+.card-price-stack {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1;
+}
+
+.card-price-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #fef08a;
+  letter-spacing: -0.02em;
+}
+
+.card-price-unit {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.5rem;
+  color: #e2e8f0;
+  margin-top: 1px;
+}
+
+.card-badge-status {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 2px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.card-badge-status.gold-status {
+  background: #f59e0b;
+  color: #000;
+}
+
+/* Booth Wall Notice Sticker (under Card 1) */
+.booth-wall-sticker {
+  width: 175px;
+  background: #fef9c3;
+  border: 1px dashed rgba(161, 98, 7, 0.6);
+  border-radius: 4px;
+  padding: 5px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  transform: rotate(-1.5deg);
+}
+
+.sticker-brand {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #713f12;
+}
+
+.sticker-hint {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.55rem;
+  color: #854d0e;
+  line-height: 1.25;
+}
+
+/* --------------------------------------------------------------------------
+   CENTER: The Payphone Machine Hardware Panel (Thai Street Payphone)
+   - Free-standing, compact proportions: ~340px width, ~420px height
+   -------------------------------------------------------------------------- */
+.payphone-hardware-panel {
+  width: 340px;
+  flex-shrink: 0;
+  background: linear-gradient(175deg, #c47769 0%, #b36456 45%, #9b4e42 100%);
+  border: 2px solid #8e4438;
+  border-radius: 14px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 9px;
+  box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.3),
+              inset -3px -3px 8px rgba(0, 0, 0, 0.5),
+              0 14px 40px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 3;
+}
+
+/* Handset Column (Clickable to Lift Handset) */
+.payphone-handset-column {
+  width: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.payphone-handset-column:hover {
+  transform: translateY(-2px);
+}
+
+.payphone-handset-column:active,
+.payphone-handset-column.lifted {
+  transform: translateY(-6px) rotate(-3deg);
+}
+
+.payphone-cradle-fork {
+  width: 26px;
+  height: 9px;
+  border: 2px solid #d4d4d8;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  background: #71717a;
+  margin-bottom: -3px;
+  z-index: 2;
+  box-shadow: inset 0 1px 2px #fff, 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 3px;
+}
+
+.cradle-prong {
+  width: 3px;
+  height: 4px;
+  background: #3f3f46;
+  border-radius: 1px;
+}
+
+.payphone-handset-piece {
+  width: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.7));
+}
+
+.handset-earpiece,
+.handset-mouthpiece {
+  width: 38px;
+  height: 32px;
+  background: linear-gradient(145deg, #27272a 0%, #18181b 60%, #09090b 100%);
+  border: 1.5px solid #3f3f46;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+.ear-grill,
+.mouth-grill {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #09090b 2px, #3f3f46 2px, #18181b 4px);
+  border: 1px solid #52525b;
+}
+
+.handset-handle {
+  width: 18px;
+  height: 60px;
+  background: linear-gradient(90deg, #18181b 0%, #27272a 45%, #09090b 100%);
+  border-left: 1.5px solid #3f3f46;
+  border-right: 1.5px solid #3f3f46;
+  margin: -3px 0;
+  position: relative;
+}
+
+.handset-groove {
+  display: block;
+  width: 4px;
+  height: 38px;
+  margin: 11px auto;
+  background: #09090b;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px #000;
+}
+
+.payphone-coiled-cord-wrap {
+  width: 32px;
+  height: 145px;
+  margin-top: -2px;
+  display: flex;
+  justify-content: center;
+}
+
+.payphone-coiled-cord {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* Faceplate Assembly */
+.payphone-faceplate {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* Metal Instruction Plaque Plate */
+.payphone-metal-plate {
+  background: linear-gradient(145deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+  border: 1px solid #64748b;
+  border-radius: 5px;
+  padding: 6px 8px;
+  box-shadow: inset 0 1px 2px #ffffff, 0 2px 5px rgba(0, 0, 0, 0.4);
+  color: #0f172a;
+  position: relative;
+  text-align: left;
+}
+
+.plate-title {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #94a3b8;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+
+.plate-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.62rem;
+  color: #1e293b;
+  line-height: 1.25;
+}
+
+.plate-steps b {
+  color: #0f172a;
+}
+
+/* Street Marker Tag */
+.payphone-street-tag {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px dashed rgba(0, 0, 0, 0.45);
+  border-radius: 3px;
+  font-family: 'IBM Plex Sans Thai', cursive, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #09090b;
+  transform: rotate(-3deg);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.04em;
+}
+
+/* Retro Digital LCD Screen */
+.payphone-screen-enclosure {
+  background: #09120c;
+  border: 2px solid #2b4532;
+  border-radius: 5px;
+  padding: 4px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.payphone-lcd-glass {
+  background: #0d2015;
+  border: 1px solid #1c3e29;
+  border-radius: 3px;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+  font-family: 'VT323', 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  color: #4ade80;
+  text-shadow: 0 0 5px rgba(74, 222, 128, 0.8);
+}
+
+.lcd-line {
+  line-height: 1.1;
+}
+
+.lcd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+
+.lcd-main {
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #86efac;
+}
+
+.lcd-sub {
+  font-size: 0.74rem;
+  color: #4ade80;
+  opacity: 0.9;
+}
+
+/* Interactive Coin Slot Unit */
+.payphone-coin-unit {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coin-slot-housing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.coin-slot-aperture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+  border: 1.5px solid #475569;
+  border-radius: 4px;
+  padding: 2px 5px;
+  box-shadow: inset 0 1px 2px #fff;
+}
+
+.slot-opening {
+  width: 3px;
+  height: 14px;
+  background: #09090b;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px #000;
+}
+
+.slot-label {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.48rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.btn-insert-coin {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px 6px;
+  background: linear-gradient(145deg, #d97706 0%, #b45309 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 5px;
+  color: #ffffff;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(180, 83, 9, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.15s ease;
+}
+
+.btn-insert-coin:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(145deg, #f59e0b 0%, #d97706 100%);
+}
+
+.btn-insert-coin:active {
+  transform: translateY(1px);
+}
+
+.coin-disc-badge {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.58rem;
+  font-weight: 800;
+  background: #78350f;
+  color: #fef08a;
+  padding: 1px 3px;
+  border-radius: 3px;
+  border: 1px solid #f59e0b;
+}
+
+.coin-credit-counter {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.65rem;
+  color: #f8fafc;
+  text-align: right;
+}
+
+.coin-credit-counter b {
+  color: #fef08a;
+  font-size: 0.74rem;
+}
+
+/* Tactile 12-Key Push Button Keypad Matrix */
+.payphone-keypad-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.keypad-btn {
+  aspect-ratio: 1 / 1;
+  max-width: 52px;
+  margin: 0 auto;
+  width: 100%;
+  background: radial-gradient(circle at 35% 30%, #3f3f46 0%, #18181b 75%);
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  padding: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.6),
+              0 2.5px 0 #27272a,
+              0 3.5px 5px rgba(0, 0, 0, 0.6);
+  transition: all 0.08s ease;
+  user-select: none;
+}
+
+.keypad-btn:hover {
+  border-color: #fef08a;
+  background: radial-gradient(circle at 35% 30%, #52525b 0%, #27272a 75%);
+}
+
+.keypad-btn:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8),
+              0 1px 0 #27272a,
+              0 1.5px 3px rgba(0, 0, 0, 0.5);
+}
+
+.keypad-btn.active-key {
+  border-color: #f59e0b;
+  background: radial-gradient(circle at 35% 30%, #b45309 0%, #78350f 75%);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 2.5px 0 #451a03;
+}
+
+.key-digit {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.key-alpha {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.4rem;
+  font-weight: 700;
+  color: #a1a1aa;
+  letter-spacing: 0.03em;
+  margin-top: 1px;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.keypad-btn.active-key .key-alpha {
+  color: #fef08a;
+}
+
+.keypad-btn:disabled,
+.keypad-btn:disabled:hover,
+.keypad-btn:disabled:active {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  filter: saturate(0.25);
+}
+
+/* Coin Return Pocket (Clickable) */
+.payphone-coin-return-cup {
+  margin-top: auto;
+  background: #18181b;
+  border: 1.5px solid #3f3f46;
+  border-radius: 4px;
+  padding: 4px 6px;
+  text-align: center;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.payphone-coin-return-cup:hover {
+  background: #27272a;
+  border-color: #64748b;
+}
+
+.payphone-coin-return-cup:active,
+.payphone-coin-return-cup.flapped {
+  transform: translateY(1px);
+  background: #09090b;
+  box-shadow: inset 0 3px 8px #000;
+}
+
+.coin-cup-flap {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #a1a1aa;
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM FLOATING CONTROLS DOCK (Free floating capsule dock, no box border)
+   -------------------------------------------------------------------------- */
+.payphone-floating-dock {
+  width: 100%;
+  max-width: 920px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 20px;
+  margin-top: 10px;
+  background: rgba(16, 18, 26, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.dock-shirt-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dock-size-cluster,
+.dock-color-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dock-color-cluster[hidden] {
+  display: none;
+}
+
+.color-choice-group {
+  display: flex;
+  gap: 5px;
+}
+
+.payphone-color-choice-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 9px;
+  border: 1px solid #383e52;
+  border-radius: 6px;
+  background: #202432;
+  color: #e2e8f0;
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.payphone-color-choice-btn:hover,
+.payphone-color-choice-btn.active {
+  border-color: #f59e0b;
+  background: #382e20;
+  color: #fef08a;
+}
+
+.payphone-color-choice-btn:focus-visible,
+.size-choice-btn:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+.payphone-color-swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.swatch-espresso { background: #342823; }
+.swatch-sand { background: #ded3c1; }
+
+.dock-size-label {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.size-choice-group {
+  display: flex;
+  gap: 5px;
+}
+
+.size-choice-btn {
+  background: #202432;
+  border: 1px solid #383e52;
+  color: #e2e8f0;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.size-choice-btn:hover {
+  border-color: #f59e0b;
+  color: #ffffff;
+}
+
+.size-choice-btn.active {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #000000;
+  font-weight: 900;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.dock-chest-badge {
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.68rem;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.dock-no-shirt-hint {
+  display: none;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
+}
+
+.dock-size-cluster.no-shirt .size-choice-group,
+.dock-size-cluster.no-shirt .dock-chest-badge {
+  display: none !important;
+}
+
+.dock-size-cluster.no-shirt .dock-no-shirt-hint {
+  display: inline-block !important;
+}
+
+.dock-vertical-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.16);
+  flex-shrink: 0;
+}
+
+.dock-summary-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 180px;
+  justify-content: center;
+  min-width: 0;
+}
+
+.summary-badge-pkg {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', monospace;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  white-space: nowrap;
+}
+
+.summary-badge-name {
+  font-family: 'IBM Plex Sans Thai', 'Space Grotesk', 'Cinzel', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summary-badge-price {
+  font-family: 'Space Grotesk', 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #fef08a;
+  white-space: nowrap;
+}
+
+.dock-action-cluster {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-payphone-call {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.45);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-payphone-call:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.6);
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.call-pulse-icon {
+  font-size: 0.74rem;
+  color: #fef08a;
+  animation: callPulse 1.4s infinite ease-in-out;
+}
+
+@keyframes callPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design (Small screens & Mobile)
+   -------------------------------------------------------------------------- */
+/* The telephone comes first on phones and remains centered between desktop cards. */
+.payphone-machine { flex-shrink: 0; min-width: 0; order: 1; }
+.booth-wall-flank.wall-right { order: 2; }
+.payphone-brand-mobile, .hangup-label-mobile { display: none; }
+
+@media (max-width: 900px) {
+  .payphone-modal-backdrop {
+    justify-content: flex-start;
+    overflow-y: auto;
+    scroll-padding-block: 80px 24px;
+  }
+  .payphone-floating-header {
+    position: static;
+    max-width: 560px;
+    min-width: 0;
+    min-height: 60px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 6px 84px 10px 0;
+    gap: 12px;
+    border-bottom: 0;
+    background: none;
+  }
+  .payphone-floating-badge { min-width: 0; max-width: 100%; padding: 6px 10px; border-radius: 10px; }
+  .payphone-status-dot { flex-shrink: 0; }
+  .payphone-brand-full, .hangup-label-full { display: none; }
+  .payphone-brand-mobile { display: block; font-size: .83rem; letter-spacing: .04em; }
+  .payphone-brand-mobile > span { display: block; color: #b9bdca; font-size: .72rem; letter-spacing: 0; font-weight: 500; }
+  .hangup-label-mobile { display: inline; }
+  .payphone-floating-hangup {
+    /* Mobile performance.css removes the modal backdrop filter so this stays
+       fixed to the viewport while the rest of the header scrolls away. */
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right), calc((100vw - 560px) / 2));
+    z-index: 20;
+    min-width: 72px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 8px 12px;
+    background: #3d1c25;
+  }
+  .payphone-floating-hangup:hover { background: #55232b; }
+  .hangup-text { font-size: .8rem; }
+  .payphone-role-filter-row { max-width: 560px; align-items: flex-start; justify-content: flex-start; margin: 14px 0 16px; gap: 10px; }
+  .payphone-account-badge { padding: 6px 12px; font-size: .8rem; white-space: normal; text-align: left; box-shadow: 0 0 12px #f59e0b26; }
+  .payphone-selection-hint { color: #bac1ce; font-size: .8rem; line-height: 1.65; text-align: left; }
+
+  /* Full-width printed phonecards keep Thai names, prices and badges readable. */
+  .payphone-free-stage { display: flex; flex-direction: column; align-items: stretch; width: 100%; max-width: 560px; gap: 12px; }
+  .booth-wall-flank.wall-left, .booth-wall-flank.wall-right { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; gap: 12px; margin: 0; order: 0; }
+  .booth-wall-sticker { display: none; }
+  .vintage-phonecard {
+    width: 100%;
+    height: auto;
+    min-height: 124px;
+    border: 2px solid #e5e1d6;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px #0004;
+  }
+  .vintage-phonecard, .vintage-phonecard.active-pkg, .vintage-phonecard:hover,
+  .wall-left .vintage-phonecard, .wall-right .vintage-phonecard:nth-child(n) { transform: none !important; }
+  .vintage-phonecard.active-pkg { border-color: #f59e0b; outline: none; box-shadow: 0 0 0 2px #f59e0b55, 0 6px 16px #0004; }
+  .vintage-phonecard::after { content: ''; position: absolute; top: 9px; right: 10px; z-index: 3; width: 18px; height: 18px; border: 1.5px solid #aaa494; border-radius: 50%; background: #fffdf6; }
+  .vintage-phonecard.active-pkg::after { content: '✓'; display: grid; place-items: center; border-color: #d97706; background: #f59e0b; color: #18120a; font: 800 12px system-ui, sans-serif; }
+  .card-scotch-tape { width: 36px; height: 8px; top: -4px; }
+  .phonecard-body { display: grid; grid-template-columns: minmax(0, 1fr) 96px; height: auto; min-height: inherit; overflow: visible; }
+  .phonecard-top-row { grid-column: 1 / -1; gap: 10px; margin-right: 26px; padding: 7px 10px 4px; }
+  .card-chip-graphic { width: 20px; height: 15px; flex-shrink: 0; }
+  .chip-notch { width: 2px; left: 8px; }
+  .card-telecom-badge { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 8px; }
+  .telecom-name { font-size: .6rem; }
+  .card-dial-key { font-size: .66rem; }
+  .phonecard-art-area { grid-column: 1; grid-row: 2; min-width: 0; padding: 8px 12px 12px; align-items: flex-start; text-align: left; }
+  .card-art-motif { display: none; }
+  .card-pkg-name { margin: 0; font-size: .94rem; line-height: 1.55; overflow-wrap: anywhere; }
+  .card-pkg-sub { display: block; margin-top: 3px; font-size: .73rem; line-height: 1.55; overflow-wrap: anywhere; }
+  .phonecard-bottom-swoosh { grid-column: 2; grid-row: 2; align-self: stretch; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; margin: 0; padding: 10px 12px; border-radius: 12px 0 0 0; }
+  .card-price-val { font-size: 1.3rem; }
+  .card-price-unit { font-size: .59rem; line-height: 1.5; }
+  .card-badge-status { max-width: 100%; font-size: .6rem; padding: 2px 4px; }
+
+  .payphone-machine { order: -1; width: 100%; }
+  .payphone-hardware-panel { width: 100%; max-width: 330px; min-width: 0; margin: 0 auto 12px; }
+  .payphone-faceplate { min-width: 0; }
+  .payphone-handset-column { width: 38px; }
+  .payphone-handset-piece { width: 32px; height: 130px; }
+  .handset-earpiece, .handset-mouthpiece { width: 32px; height: 32px; }
+  .payphone-metal-plate { padding: 6px; }
+  .plate-title { font-size: .6rem; }
+  .plate-steps { font-size: .6rem; line-height: 1.5; }
+  .payphone-street-tag { font-size: .7rem; }
+  .payphone-lcd-glass { min-height: 64px; padding: 6px; overflow-wrap: anywhere; }
+  .lcd-header { font-size: .62rem; }
+  .lcd-main { font-size: .78rem; line-height: 1.5; }
+  .lcd-sub { font-size: .64rem; line-height: 1.5; }
+  .keypad-btn { width: 44px; height: 44px; }
+  .keypad-btn .key-digit { font-size: 1.05rem; }
+  .btn-insert-coin { min-height: 44px; font-size: .65rem; }
+  .coin-slot-housing { gap: 6px; }
+
+  .payphone-floating-dock { display: flex; flex-direction: column; flex-wrap: nowrap; align-items: stretch; width: 100%; max-width: 560px; gap: 14px; margin: 16px auto 0; padding: 16px; border-radius: 14px; }
+  .dock-shirt-options { width: 100%; gap: 14px; }
+  .dock-color-cluster, .dock-size-cluster { width: 100%; align-items: flex-start; justify-content: flex-start; gap: 8px; }
+  .dock-size-label { flex-basis: 100%; font-size: .8rem; }
+  .color-choice-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 8px; }
+  .payphone-color-choice-btn { min-width: 0; min-height: 44px; padding: 8px; justify-content: center; font-size: .75rem; }
+  .size-choice-group { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; gap: 6px; }
+  .size-choice-btn { min-width: 0; min-height: 44px; padding: 6px 0; font-size: .8rem; }
+  .dock-chest-badge, .dock-no-shirt-hint { white-space: normal; }
+  .dock-vertical-divider { display: none; }
+  .dock-summary-cluster { display: grid; grid-template-columns: minmax(0, 1fr) auto; justify-content: stretch; gap: 6px 10px; padding-top: 12px; border-top: 1px dashed #ffffff26; flex: none; }
+  .summary-badge-pkg { justify-self: start; white-space: normal; font-size: .67rem; }
+  .summary-badge-name { grid-column: 1; white-space: normal; overflow: visible; font-size: .86rem; line-height: 1.6; }
+  .summary-badge-price { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: 1.3rem; }
+  .dock-action-cluster { width: 100%; }
+  .btn-payphone-call { width: 100%; min-height: 48px; justify-content: center; padding: 12px; border-radius: 10px; white-space: normal; text-align: center; }
+}
